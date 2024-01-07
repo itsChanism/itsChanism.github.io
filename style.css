@@ -1,0 +1,126 @@
+.bg-video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  height: auto;
+  z-index: -100;
+  opacity: 0.8;
+  object-fit: cover;
+  filter: grayscale(60%);
+
+}
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+footer {
+  bottom: 5%;
+  position: fixed;
+  right: 50%;
+  z-index: 1;
+}
+
+.timer {
+  position: fixed;
+  z-index: 1;
+  padding: 20px;
+  text-align: center;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  
+}
+
+#timeElement{
+  font-size: 50vh;
+  color: rgba(191, 188, 188, 0.6);
+  
+}
+#dateElement{
+  position:fixed;
+  left:45%;
+  color:white;
+  font-size: larger;
+  font-weight: 200;
+}
+
+.overlay {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  text-align: center;
+}
+
+/* .digital-clock {
+  font-size: 2em;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+} */
+
+.clickable-texts {
+  margin-top: 20%;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.animated-text {
+  display: block;
+  font-size: 1.5em;
+  color: white;
+  margin: 20px 0;
+  transition: transform 0.3s;
+}
+
+.cursor-mask {
+  position: absolute;
+  pointer-events: none;
+  /* Allows clicks to pass through */
+  border-radius: 50%;
+  /* Makes the div circular */
+  width: 2cm;
+  /* 2cm radius */
+  height: 2cm;
+  /* 2cm radius */
+  margin-top: -1cm;
+  /* Offset by radius to center on cursor */
+  margin-left: -1cm;
+  /* Offset by radius to center on cursor */
+  backdrop-filter: invert(100%);
+  z-index: 99;
+  /* Above the video, but below other content */
+}
+
+.animated-text:hover,
+.animated-text:focus {
+  transform: scale(3);
+  cursor: pointer;
+
+}
+
+
+/* Additional animation on click can be added through JavaScript */
+@keyframes fancyClickAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.fancy-animation {
+  animation: fancyClickAnimation 1s forwards;
+}
