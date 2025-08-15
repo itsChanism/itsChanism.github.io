@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -27,6 +27,718 @@
     <p>&copy; 2023 Oct 24th itsChanism</p>
   </footer>
   <script src="./script.js"></script>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jiamu Tang — PhD Applicant · HCI · BCI · XR</title>
+  <meta name="description"
+    content="Personal research website for PhD applications. HCI · BCI · XR · Philosophy of Mind" />
+  <style>
+    /* ======= Design Tokens ======= */
+    :root {
+      --bg: #0f1115;
+      /* dark bg */
+      --fg: #e7e9ee;
+      /* light text */
+      --muted: #a0a6b8;
+      /* muted text */
+      --card: #151922;
+      /* card bg */
+      --accent: #7c9cff;
+      /* primary */
+      --accent-2: #7cffe1;
+      /* secondary */
+      --ring: rgba(124, 156, 255, .35);
+      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      --radius: 18px;
+      --radius-sm: 12px;
+      --maxw: 1050px;
+      --speed: 180ms;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    .kpis {
+      list-style: none;
+      /* remove bullets */
+      padding: 0;
+      /* remove left indent */
+      margin: 0;
+      /* remove top/bottom margins */
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .kpi,
+    .kpi a {
+      padding: .25rem .5rem;
+      border: 1px solid #ddd;
+      border-radius: 9999px;
+      text-decoration: none;
+      display: inline-block;
+      color: inherit;
+    }
+
+    /* Light mode */
+    .light {
+      --bg: #fbfbfe;
+      --fg: #10121a;
+      --muted: #51586b;
+      --card: #fff;
+      --accent: #3555ff;
+      --accent-2: #08a585;
+      --ring: rgba(53, 85, 255, .25);
+      --shadow: 0 10px 24px rgba(16, 18, 26, .08);
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background: radial-gradient(1000px 600px at 90% -10%, rgba(124, 156, 255, .18), transparent 50%),
+        radial-gradient(1000px 700px at -10% 20%, rgba(124, 255, 225, .14), transparent 50%), var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      letter-spacing: .1px;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none
+    }
+
+    a:hover {
+      text-decoration: underline
+    }
+
+    img {
+      max-width: 100%;
+      display: block
+    }
+
+    /* ======= Layout ======= */
+    .wrap {
+      max-width: var(--maxw);
+      margin-inline: auto;
+      padding: 0 20px
+    }
+
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: saturate(1.2) blur(10px);
+      background: color-mix(in lab, var(--bg), transparent 35%);
+      border-bottom: 1px solid color-mix(in lab, var(--fg), transparent 90%);
+    }
+
+    .site .bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 64px
+    }
+
+    .site .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700
+    }
+
+    .brand .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 12px var(--ring)
+    }
+
+    nav a {
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted)
+    }
+
+    nav a[aria-current="page"],
+    nav a:hover {
+      background: color-mix(in lab, var(--accent), transparent 90%);
+      color: var(--fg)
+    }
+
+    .spacer {
+      flex: 1
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid color-mix(in lab, var(--fg), transparent 85%);
+      background: color-mix(in lab, var(--card), transparent 0%);
+      color: var(--fg);
+      box-shadow: var(--shadow)
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      transition: transform var(--speed)
+    }
+
+    .ghost {
+      background: transparent;
+      box-shadow: none
+    }
+
+    /* ======= Hero ======= */
+    .hero {
+      padding: 72px 0 42px
+    }
+
+    .hero .inner {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 28px;
+      align-items: center
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 4.8vw, 46px);
+      line-height: 1.1;
+      margin: 0 0 8px
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 6px 10px;
+      border: 1px dashed color-mix(in lab, var(--fg), transparent 85%);
+      border-radius: 999px
+    }
+
+    .glow {
+      color: var(--accent-2)
+    }
+
+    .lead {
+      font-size: clamp(15px, 1.7vw, 18px);
+      color: var(--muted)
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap
+    }
+
+    .portrait {
+      min-height: 280px;
+      border-radius: var(--radius);
+      background: repeating-conic-gradient(from 0deg, color-mix(in lab, var(--accent), transparent 70%) 0 18deg, transparent 18deg 36deg);
+      display: grid;
+      object-fit: contain;
+      place-items: center;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      border: 1px solid color-mix(in lab, var(--fg), transparent 90%);
+      
+    }
+
+    .portrait::after {
+      content: "Your Photo";
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: .2em;
+      text-transform: uppercase
+    }
+
+    /* ======= Sections ======= */
+    section {
+      padding: 58px 0;
+      scroll-margin-top: 70px
+    }
+
+    .h2 {
+      font-size: clamp(22px, 3.2vw, 30px);
+      margin: 0 0 12px
+    }
+
+    .sub {
+      color: var(--muted);
+      margin: 0 0 22px;
+      font-size: 15px
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px
+    }
+
+    .card {
+      grid-column: span 12;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      border: 1px solid color-mix(in lab, var(--fg), transparent 90%);
+      box-shadow: var(--shadow)
+    }
+
+    @media (min-width: 720px) {
+      .card.span-6 {
+        grid-column: span 6
+      }
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px
+    }
+
+    .tab {
+      border: 1px solid color-mix(in lab, var(--fg), transparent 85%);
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer
+    }
+
+    .tab[aria-selected="true"] {
+      background: linear-gradient(135deg, color-mix(in lab, var(--accent), transparent 85%), color-mix(in lab, var(--accent-2), transparent 85%));
+      color: var(--fg)
+    }
+
+    /* Accordions */
+    details {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid color-mix(in lab, var(--fg), transparent 90%);
+      padding: 16px;
+      box-shadow: var(--shadow)
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600
+    }
+
+    details+details {
+      margin-top: 12px
+    }
+
+    /* Image Slots */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px
+    }
+
+    .img-slot {
+      grid-column: span 12;
+      background: conic-gradient(from 0deg, color-mix(in lab, var(--accent), transparent 92%) 0 25%, transparent 25% 100%);
+      border: 1px dashed color-mix(in lab, var(--fg), transparent 80%);
+      border-radius: var(--radius);
+      height: 220px;
+      display: grid;
+      place-items: center;
+      object-fit: contain;
+      color: var(--muted)
+    }
+
+    @media (min-width: 760px ) {
+      .img-slot.span-6 {
+        grid-column: span 6
+        
+      }
+    }
+
+    /* Footer */
+    footer {
+      padding: 30px 0;
+      border-top: 1px solid color-mix(in lab, var(--fg), transparent 90%);
+      color: var(--muted)
+    }
+
+    /* Utility */
+    .muted {
+      color: var(--muted)
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: color-mix(in lab, var(--accent), transparent 85%);
+      font-size: 12px
+    }
+
+    .kpis {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .kpi {
+      padding: 8px 10px;
+      border: 1px solid color-mix(in lab, var(--fg), transparent 85%);
+      border-radius: 10px;
+      font-family: var(--mono)
+    }
+
+    /* Back to top */
+    .up {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      border-radius: 999px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid color-mix(in lab, var(--fg), transparent 85%);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      opacity: .9
+    }
+
+    /* Reading progress bar */
+    .progress {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      width: 0%;
+      z-index: 999
+    }
+
+    /* Focus */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress" id="progress" role="presentation" aria-hidden="true"></div>
+  <header class="site">
+    <div class="wrap bar">
+      <div class="brand" aria-label="Site brand">
+        <span class="dot"></span>
+        <span>Jiamu Tang</span>
+      </div>
+      <nav aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#directions">Research Directions</a>
+        <a href="#projects">Projects</a>
+        <a href="#programs">Why School & Program</a>
+        <a href="#publications">Publications</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="spacer"></div>
+      <button class="btn ghost" id="themeBtn" aria-pressed="false" aria-label="Toggle theme">🌗 Theme</button>
+      <a class="btn" href="#" id="cvBtn" aria-label="Download CV (replace link)">⭳ CV</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======= Hero ======= -->
+    <section class="hero wrap" id="home">
+      <div class="inner">
+        <div>
+          <span class="tag">HCI · Data Science · XR · Philosophy · Linguistic</span>
+          <h1>
+            Designing augmentation that <span class="glow">amplifies</span> human perception & identity — not fragments
+            it.
+          </h1>
+          <p class="lead">I aimed to build neuroadaptive and mixed-reality systems that extend human capabilities while
+            preserving phenomenological unity. Currently preparing PhD applications.</p>
+          <ul class="kpis" aria-label="Quick facts">
+            <li class="kpi">University of Rochester</li>
+            <li class="kpi">
+              <a href="https://rochester-bear-lab.github.io/" target="_blank" rel="noopener noreferrer">
+                BEAR Lab · XR
+              </a>
+            </li>
+            <li class="kpi">CHI 2025 LBW</li>
+            
+          </ul>
+          <div class="cta">
+            <a class="btn" href="#directions">Explore my research</a>
+            <a class="btn ghost" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <img class= "portrait" src="./chi.jpeg" alt="Portrait of Jiamu Tang" />
+          <!-- EDIT: Replace with <img src="your-photo.jpg" alt="Portrait of Jiamu Tang" /> -->
+        </aside>
+      </div>
+    </section>
+
+    <!-- ======= About ======= -->
+    <section id="about">
+      <div class="wrap">
+        <h2 class="h2">About</h2>
+        <p class="sub">Rooted in philosophy since middle school, I explore how perception shapes reality and how
+          technology can extend human senses, actions, and meaning—without compromising selfhood.</p>
+        <div class="cards">
+          <article class="card span-6">
+            <h3>Core Principles</h3>
+            <ul>
+              <li>Integration should feel <strong>intuitive</strong> rather than invasive.</li>
+              <li>Augmentation should <strong>affirm identity</strong> rather than erode it.</li>
+              <li>Interaction should foster <strong>connection</strong> rather than isolation.</li>
+            </ul>
+          </article>
+          <article class="card span-6">
+            <h3>Philosophical Framing</h3>
+            <p class="muted">
+              Rooted in subjective idealism’s belief that perception grounds reality, my work—drawing on Mary Shelley’s 
+              <em>Frankenstein</em> and Merleau-Ponty’s phenomenology (1945) —advances augmentation-with-integration, enhancing human 
+              capabilities while sustaining embodied unity.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= Research Directions (Tabs) ======= -->
+    <section id="directions">
+      <div class="wrap">
+        <h2 class="h2">Research Directions</h2>
+        <p class="sub">Split from my Statement of Purpose into two complementary tracks.</p>
+
+        <div class="tabs" role="tablist" aria-label="Research directions">
+          <button class="tab" role="tab" aria-selected="true" aria-controls="panel-a" id="tab-a">Direction A — Embodied
+            Augmentation</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-b" id="tab-b">Direction B —
+            Neuroadaptive + Affective</button>
+        </div>
+
+        <div id="panel-a" role="tabpanel" tabindex="0" aria-labelledby="tab-a" class="card" style="display:block">
+          <h3>Embodied Augmentation & Phenomenological Integration</h3>
+          <ul>
+            <li>Create XR systems (AR/VR/MR) that extend human perception and action—e.g., gravity manipulation, wall-climbing， third limb
+              metaphors—while preserving bodily coherence and affordance.</li>
+            <li>Ensure technological augmentation collaborates <em>harmoniously</em> with biological intelligence to preserve the unity of self, perception, and movement.</li>
+            <li>Research question: How can avatars/exoskeletal metaphors communicate augmented capability
+              <em>intuitively</em> without alienating the self?
+            </li>
+          </ul>
+          <p class="muted">Origin: RA experience at BEAR Lab (leaded by Prof. Yukang Yan) projects in Unity exploring extraordinary capabilities
+            and alternate-reality experiences.</p>
+        </div>
+
+        <div id="panel-b" role="tabpanel" tabindex="0" aria-labelledby="tab-b" class="card" style="display:none">
+          <h3>Neuroadaptive & Affective Interfaces (BCI × AI)</h3>
+          <ul>
+            <li>Leverage non-invasive wearable BCIs to integrate intention, attention, and affect into adaptive systems or MR system.
+            </li>
+            <li>Adjust immersion complexity via cognitive state (e.g., mental fatigue), and map imagined movements to
+              exoskeletal/avatar responses in Virtual Reality.</li>
+            <li>Apply AI to support meaning-making and narrative therapy to enhance emotional regulation in XR/BCI
+              contexts (CHI 2025 LBW).</li>
+          </ul>
+          <p class="muted">Goal: Advance well-being and recovery while enriching human experience—without sacrificing
+            identity.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======= Projects / Highlights ======= -->
+    <section id="projects">
+      <div class="wrap">
+        <h2 class="h2">Selected Highlights</h2>
+        <p class="sub">Short teasers, with visual slots ready for images or diagrams.</p>
+
+        <div class="grid">
+          <img class= "img-slot span-6" src="./teaser.png" alt="Portrait of Jiamu Tang" />
+          <article class="card span-6">
+            <h3>XR Capability Metaphors -- Intuitive avatar design guideline</h3>
+            <h4><em>paper in submit CHI 2026</em></h4>
+            <p> Develop and validate design guidelines so avatars can intuitively communicate their augmented abilities and corresponding interactions—at a glance.
+              Unity prototypes enabling users to enhance climbing, alter gravity and body size, and manipulate electricity — probing how capability cues can
+              remain intuitive and comfortable.</p>
+            <span class="badge">Prototype</span>
+          </article>
+
+          <article class="card span-6">
+            <h3>Dreamory — CHI 2025 LBW</h3>
+            <p><em><b>expended to long paper, paper in submit CHI 2026</b></em></p>
+            <p>AI-assisted bedtime storytelling and meaning-making to support emotional reframing before sleep, paving
+              the way for BCI-integrated affective XR.</p>
+            <span class="badge">Publication</span>
+          </article>
+          <img class= "img-slot span-6" src="./process.png" alt="Portrait of Jiamu Tang" />
+
+          <img class= "img-slot span-6" src="./teaser.png" alt="Portrait of Jiamu Tang" />
+          <article class="card span-6">
+            <h3>Facial Expression manipulation</h3>
+            <h4><em>paper in submit CHI 2026</em></h4>
+            <p> How to adjust facial expression scale in VR that could bring confidence and socially comfortableness</p>
+            <span class="badge">Prototype</span>
+          </article>
+        </div>
+
+        <details style="margin-top:16px">
+          <summary>More context from my Statement of Purpose</summary>
+          <p>Believing perception shapes reality, I pursue neurotechnology to transcend sensory limits. Non-invasive
+            BCIs can make systems responsive to intention and affect, while AI adds empathy and meaning-awareness to
+            interactions.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ======= Why School & Program ======= -->
+    <!-- <section id="programs">
+      <div class="wrap">
+        <h2 class="h2">Why School & Program</h2>
+        <p class="sub">Edit the bullets for each program you apply to. Keep it tight: fit, facilities, mentorship, and
+          unique alignment.</p>
+        <div class="cards">
+          <article class="card span-6">
+            <h3>Program Fit (Template)</h3>
+            <ul>
+              
+              <li><strong>[School / Program]</strong> — XR, HCI, and neurotech strengths; access to labs; collaboration
+                across CS + CogSci.</li>
+              <li><strong>[School / Program]</strong> — Strong BCI/affective computing; ethics & design integration;
+                clinical collaboration.</li>
+            </ul>
+          </article>
+          <article class="card span-6">
+            <h3>Professors I Hope to Work With (Edit)</h3>
+            <ul>
+              
+              <li><strong>Prof. [Name]</strong> — [reason: XR capability design / social presence / avatar
+                communication].</li>
+              <li><strong>Prof. [Name]</strong> — [reason: BCI signal processing / neuroadaptive interfaces].</li>
+              <li><strong>Prof. [Name]</strong> — [reason: affective computing / human-AI collaboration].</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- ======= Publications ======= -->
+    <!-- <section id="publications">
+      <div class="wrap">
+        <h2 class="h2">Publications & Writing</h2>
+        <div class="cards">
+          <article class="card span-6">
+            <h3>CHI 2025 Late-Breaking Work</h3>
+            <p><em>Dreamory: AI-Powered Bedtime Storytelling for Emotional Reframing Before In-Sleep Memory
+                Consolidation.</em></p>
+            <p class="muted">Narrative therapy meets XR/BCI aspirations to support well-being via meaning-making and
+              affective guidance.</p>
+          </article>
+          <article class="card span-6">
+            <h3>Essays</h3>
+            <p>On Merleau-Ponty, embodied intelligence, and why augmentation must protect identity.</p>
+            <p class="muted">Request samples via email.</p>
+          </article>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- ======= Contact ======= -->
+    <section id="contact">
+      <div class="wrap">
+        <h2 class="h2">Contact</h2>
+        <p class="sub">Happy to chat about PhD fit, collaborations, or shared interests.</p>
+        <div class="cards">
+          <article class="card span-6">
+            <h3>Get in touch</h3>
+            <ul>
+              <li>Email: <a href="jtang41@u.rochester.edu">jtang41@u.rochester.edu</a> </li>
+              <li>GitHub / Portfolio: <a href="https://github.com/itsChanism">My git only have some of my projects</a> <!-- EDIT --></li>
+              <li>CV: <a href="https://206364.cargo.site/">you can check my CV here, called 'CV 2025', and some other DMST projects </a> <!-- EDIT --></li>
+            </ul>
+          </article>
+          <article class="card span-6">
+            <h3>Open to</h3>
+            <ul>
+              <li>PhD positions in HCI, XR, BCI</li>
+              <li>Neuroadaptive & affective interface research</li>
+              <li>Ethical augmentation & embodied design</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>© <span id="year"></span> Jiamu Tang — Building humane augmentation.</p>
+    </div>
+  </footer>
+
+  <a class="up" href="#home" aria-label="Back to top">↑</a>
+
+  <script>
+    // ===== Theme Toggle with persistence =====
+    const root = document.documentElement; const themeBtn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('theme'); if (saved === 'light') { document.body.classList.add('light'); themeBtn.setAttribute('aria-pressed', 'true') }
+    themeBtn.addEventListener('click', () => { document.body.classList.toggle('light'); const isLight = document.body.classList.contains('light'); themeBtn.setAttribute('aria-pressed', String(isLight)); localStorage.setItem('theme', isLight ? 'light' : 'dark'); });
+
+    // ===== Reading progress bar =====
+    const bar = document.getElementById('progress');
+    function progress() { const h = document.documentElement; const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight); bar.style.width = (scrolled * 100).toFixed(1) + '%'; }
+    document.addEventListener('scroll', progress, { passive: true }); progress();
+
+    // ===== Tabs (Research directions) =====
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panels = { 'tab-a': 'panel-a', 'tab-b': 'panel-b' };
+    tabs.forEach(t => {
+      t.addEventListener('click', () => {
+        tabs.forEach(x => x.setAttribute('aria-selected', 'false'));
+        t.setAttribute('aria-selected', 'true');
+        for (const id of Object.values(panels)) { document.getElementById(id).style.display = 'none'; }
+        document.getElementById(panels[t.id]).style.display = 'block';
+      })
+    })
+
+    // ===== Small reveal-on-scroll =====
+    const observer = new IntersectionObserver((entries) => {
+      for (const e of entries) { if (e.isIntersecting) { e.target.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 350, easing: 'ease-out', fill: 'both' }); observer.unobserve(e.target); } }
+    }, { threshold: .12 });
+    for (const el of document.querySelectorAll('.card, .img-slot, details')) observer.observe(el);
+
+    // ===== Year in footer =====
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ===== CV link (placeholder) =====
+    document.getElementById('cvBtn').addEventListener('click', (e) => {
+      if (e.currentTarget.getAttribute('href') === '#') {
+        e.preventDefault(); alert('Replace the CV link (id="cvBtn") with your file URL.');
+      }
+    });
+  </script>
 </body>
 
 </html>
