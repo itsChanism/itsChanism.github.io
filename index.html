@@ -28,6 +28,26 @@
       --sidebar-w: 280px;
     }
 
+    /* ─── DARK MODE ─── */
+    :root[data-theme="dark"] {
+      --ink: #f0ece5;
+      --body: #cfc8bf;
+      --muted: #8a847b;
+      --accent: #e0714f;
+      --accent-soft: #2a201a;
+      --bg: #16140f;
+      --card: #1d1a14;
+      --border: #33302a;
+      --land: #2a261e;
+      --land-stroke: #3a352c;
+      --grid: #221f18;
+    }
+    /* Map adapts to dark mode (overrides inline SVG fills) */
+    :root[data-theme="dark"] .map-svg-wrapper path:not(.connection-line) {
+      fill: var(--land); stroke: var(--land-stroke);
+    }
+    :root[data-theme="dark"] .map-svg-wrapper line { stroke: var(--grid); }
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
@@ -38,7 +58,35 @@
       line-height: 1.7;
       font-size: 15px;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.4s ease, color 0.4s ease;
     }
+
+    /* ─── CURSOR SPOTLIGHT ─── */
+    .cursor-glow {
+      position: fixed; top: 0; left: 0;
+      width: 380px; height: 380px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(180,74,47,0.10), transparent 65%);
+      pointer-events: none; transform: translate(-50%, -50%);
+      opacity: 0; transition: opacity 0.35s ease; z-index: 0;
+    }
+    :root[data-theme="dark"] .cursor-glow {
+      background: radial-gradient(circle, rgba(224,113,79,0.14), transparent 65%);
+    }
+    .page-wrapper { position: relative; z-index: 1; }
+
+    /* ─── THEME TOGGLE BUTTON ─── */
+    .theme-toggle {
+      margin-top: 1.2rem; display: inline-flex; align-items: center; gap: 0.5rem;
+      align-self: flex-start; padding: 0.4rem 0.85rem; border-radius: 100px;
+      border: 1px solid var(--border); background: var(--card); color: var(--muted);
+      font-family: var(--sans); font-size: 0.74rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+    .theme-toggle svg { width: 14px; height: 14px; }
+    .theme-toggle .icon-dark { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-light { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-dark { display: inline; }
 
     .page-wrapper {
       display: flex;
@@ -458,9 +506,18 @@
     /* ─── PUBLICATIONS ─── */
     .pub {
       display: grid; grid-template-columns: 180px 1fr;
-      gap: 1.2rem; padding: 1.3rem 0; align-items: start;
+      gap: 1.2rem; padding: 1.3rem; align-items: start;
+      border: 1px solid transparent; border-radius: 10px;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
     }
-    .pub + .pub { border-top: 1px solid rgba(0,0,0,0.05); }
+    .pub + .pub { margin-top: 0.4rem; }
+    @media (hover: hover) and (pointer: fine) {
+      .pub:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(180,74,47,0.10);
+        border-color: var(--border); background: var(--card);
+      }
+    }
 
     .pub-thumb {
       width: 180px; height: 110px; border-radius: 5px;
@@ -578,6 +635,8 @@
 </head>
 <body>
 
+<div class="cursor-glow" id="cursorGlow"></div>
+
 <div class="page-wrapper">
 
   <!-- ═══════════ LEFT SIDEBAR ═══════════ -->
@@ -597,6 +656,12 @@
       <a href="#publications">Publications</a>
       <a href="#cv">CV</a>
     </nav>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg class="icon-light" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
+      <svg class="icon-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+      <span id="themeLabel">Dark mode</span>
+    </button>
 
     <div class="sidebar-contact">
       <a href="mailto:jtang41@u.rochester.edu">
@@ -637,7 +702,7 @@
         I received my B.S. in Data Science from the
         <a href="https://www.rochester.edu/" target="_blank">University of Rochester</a>,
         where I worked in the <a href="https://rochester-bear-lab.github.io/" target="_blank">BEAR Lab</a>
-        with Prof. Yukang Yan. My work draws on philosophy, phenomenology, and
+        with Prof. <a href="https://www.cs.rochester.edu/people/faculty/yan_yukang/index.html" target="_blank">Yukang Yan</a>. My work draws on philosophy, phenomenology, and
         sensing to explore how technology can extend human senses and actions
         without compromising selfhood.
       </p>
@@ -743,8 +808,21 @@
               <div class="card-emoji">&#x1F52C;</div>
               <div class="card-date">2025</div>
               <div class="card-title">Joined the BEAR Lab</div>
-              <div class="card-desc">Began research on XR and avatar design with <a href="https://rochester-bear-lab.github.io/" target="_blank">Prof. Yukang Yan</a> at the University of Rochester.</div>
+              <div class="card-desc">Began research on XR and avatar design with <a href="https://www.cs.rochester.edu/people/faculty/yan_yukang/index.html" target="_blank">Prof. Yukang Yan</a> at the University of Rochester.</div>
               <div class="card-tag" style="background:#f5f1e8;color:#b09e6b;">Lab</div>
+            </div>
+          </div>
+
+          <div class="map-pin" style="left: 76%; top: 47%" onclick="togglePin(this)">
+            <div class="pin-pulse"></div>
+            <div class="pin-dot"></div>
+            <div class="pin-label">Singapore</div>
+            <div class="pin-card align-right">
+              <div class="card-emoji">&#x1F3A4;</div>
+              <div class="card-date">Jun 2026</div>
+              <div class="card-title">Presented <em>Tuning the Face</em> at DIS 2026</div>
+              <div class="card-desc">Full paper on modulating facial expressions for realistic self-avatars in VR.<br/><a href="https://dis.acm.org/2026/" target="_blank">DIS 2026 &rarr;</a></div>
+              <div class="card-tag" style="background:#edf5f0;color:#6fa882;">Talk</div>
             </div>
           </div>
         </div>
@@ -769,6 +847,13 @@
             </div>
           </div>
           <div class="news-item">
+            <div class="news-badge">&#x1F3A4;</div>
+            <div class="news-body">
+              <div class="news-date">Jun 2026</div>
+              <div class="news-text">Presented <em>Tuning the Face</em> at <a href="https://dis.acm.org/2026/" target="_blank">DIS 2026</a> in Singapore — modulating facial expressions for realistic VR self-avatars.</div>
+            </div>
+          </div>
+          <div class="news-item">
             <div class="news-badge">&#x1F4C4;</div>
             <div class="news-body">
               <div class="news-date">Apr 2026</div>
@@ -786,7 +871,7 @@
             <div class="news-badge">&#x1F52C;</div>
             <div class="news-body">
               <div class="news-date">2024</div>
-              <div class="news-text">Joined the <a href="https://rochester-bear-lab.github.io/" target="_blank">BEAR Lab</a> at the University of Rochester, working on XR and avatar design with Prof. Yukang Yan.</div>
+              <div class="news-text">Joined the <a href="https://rochester-bear-lab.github.io/" target="_blank">BEAR Lab</a> at the University of Rochester, working on XR and avatar design with Prof. <a href="https://www.cs.rochester.edu/people/faculty/yan_yukang/index.html" target="_blank">Yukang Yan</a>.</div>
             </div>
           </div>
         </div>
@@ -814,15 +899,41 @@
 
       <div class="pub fade-in">
         <div class="pub-thumb">paper teaser</div>
+        <div class="pub-body">
+          <div class="pub-year">DIS 2026</div>
+          <div class="pub-title"><a href="https://dl.acm.org/action/doSearch?AllField=Tuning+the+Face+Realistic+Self-Avatars+Virtual+Reality" target="_blank">Tuning the Face: Modulating Facial Expressions for Realistic Self-Avatars in Virtual Reality</a></div>
+          <div class="pub-authors">Yang Lu, <span class="me">Jiamu Tang</span>, Jiankun Yang, Shijian Luo, C. Xu, Yukang Yan</div>
+          <div class="pub-venue">ACM Designing Interactive Systems Conference (DIS), pp. 1419–1436</div>
+          <div class="pub-links">
+            <a href="https://dl.acm.org/action/doSearch?AllField=Tuning+the+Face+Realistic+Self-Avatars+Virtual+Reality" target="_blank">ACM DL</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub fade-in">
+        <div class="pub-thumb">paper teaser</div>
         <!-- Replace with: <div class="pub-thumb"><img src="img/dreamory.png" alt="Dreamory teaser" /></div> -->
         <div class="pub-body">
           <div class="pub-year">CHI EA 2025 · Late-Breaking Work</div>
           <div class="pub-title"><a href="https://doi.org/10.1145/3706599.3719850" target="_blank">Dreamory: AI-Powered Bedtime Storytelling for Emotional Reframing Before In-Sleep Memory Consolidation</a></div>
-          <div class="pub-authors">Runyan Tian, <span class="me">Jiamu Tang</span>, Zhuying Li</div>
+          <div class="pub-authors"><span class="me">Jiamu Tang<sup>*</sup></span>, Runyan Tian<sup>*</sup>, Zhuying Li &nbsp;<span style="font-size:0.72rem; color:var(--muted);">(<sup>*</sup>co-first authors)</span></div>
           <div class="pub-venue">ACM CHI Extended Abstracts</div>
           <div class="pub-links">
             <a href="https://doi.org/10.1145/3706599.3719850" target="_blank">DOI</a>
             <a href="#">PDF</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub fade-in">
+        <div class="pub-thumb">paper teaser</div>
+        <div class="pub-body">
+          <div class="pub-year">BMC Public Health 2026</div>
+          <div class="pub-title"><a href="https://doi.org/10.1186/s12889-026-27843-x" target="_blank">Spatiotemporal Analysis of Electronic Cigarette Discussion on Twitter/X Using Natural Language Processing</a></div>
+          <div class="pub-authors">Z. Xie, <span class="me">Jiamu Tang</span>, D. Li</div>
+          <div class="pub-venue">BMC Public Health</div>
+          <div class="pub-links">
+            <a href="https://doi.org/10.1186/s12889-026-27843-x" target="_blank">DOI</a>
           </div>
         </div>
       </div>
@@ -854,6 +965,35 @@
 </div>
 
 <script>
+  // ─── Dark mode ───
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    root.setAttribute('data-theme', 'dark');
+  }
+  function syncLabel() {
+    themeLabel.textContent = root.getAttribute('data-theme') === 'dark' ? 'Light mode' : 'Dark mode';
+  }
+  syncLabel();
+  themeToggle.addEventListener('click', () => {
+    root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    syncLabel();
+  });
+
+  // ─── Cursor spotlight ───
+  const glow = document.getElementById('cursorGlow');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (fine && !reduce) {
+    document.addEventListener('mousemove', e => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+      glow.style.opacity = '1';
+    });
+    document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+  }
+
   // ─── News view toggle ───
   function switchView(view) {
     const mapView = document.getElementById('newsMapView');
