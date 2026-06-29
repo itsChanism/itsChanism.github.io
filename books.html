@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Nook · Jiamu Tang</title>
+  <meta name="description" content="Jiamu Tang's reading nook — books, reflections, and after-reading feelings." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1a1a; --body: #3a3a3a; --muted: #777;
+      --accent: #b44a2f; --accent-soft: #f6efe9;
+      --bg: #faf8f5; --card: #ffffff; --border: #e8e4de;
+      --serif: 'Newsreader', 'Georgia', serif;
+      --sans: 'DM Sans', 'Helvetica Neue', sans-serif;
+      --sidebar-w: 280px;
+    }
+    :root[data-theme="dark"] {
+      --ink: #f0ece5; --body: #cfc8bf; --muted: #8a847b;
+      --accent: #e0714f; --accent-soft: #2a201a;
+      --bg: #16140f; --card: #1d1a14; --border: #33302a;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans); background: var(--bg); color: var(--body);
+      line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+    .cursor-glow {
+      position: fixed; top: 0; left: 0; width: 380px; height: 380px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(180,74,47,0.10), transparent 65%);
+      pointer-events: none; transform: translate(-50%, -50%); opacity: 0;
+      transition: opacity 0.35s ease; z-index: 0;
+    }
+    :root[data-theme="dark"] .cursor-glow { background: radial-gradient(circle, rgba(224,113,79,0.14), transparent 65%); }
+    .page-wrapper { display: flex; max-width: 1100px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 1; }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0; position: sticky; top: 0; height: 100vh;
+      padding: 3rem 1.8rem 2rem 1.5rem; display: flex; flex-direction: column;
+      border-right: 1px solid var(--border); overflow-y: auto;
+    }
+    .photo-wrap { position: relative; width: 160px; height: 190px; margin-bottom: 1.3rem; cursor: pointer; }
+    .photo-wrap .sidebar-photo {
+      position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 8px;
+      object-fit: cover; border: 3px solid var(--card); box-shadow: 0 2px 16px rgba(0,0,0,0.06); display: block;
+    }
+    .photo-wrap .sidebar-photo.pixel { image-rendering: pixelated; opacity: 1; transition: opacity 0.5s ease; z-index: 2; }
+    .photo-wrap:hover .sidebar-photo.pixel { opacity: 0; }
+    .sidebar h1 { font-family: var(--serif); font-weight: 400; font-size: 1.55rem; color: var(--ink); letter-spacing: -0.02em; line-height: 1.25; }
+    .sidebar .role { font-size: 0.82rem; color: var(--accent); font-weight: 500; margin-top: 0.3rem; }
+    .sidebar .affiliation { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; line-height: 1.5; }
+    .sidebar-nav { margin-top: 1.8rem; display: flex; flex-direction: column; gap: 0.15rem; }
+    .sidebar-nav a { font-size: 0.82rem; text-decoration: none; color: var(--body); padding: 0.35rem 0; font-weight: 500; transition: color 0.2s; }
+    .sidebar-nav a:hover, .sidebar-nav a.active { color: var(--accent); }
+    .nav-group-label {
+      width: 100%; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--muted); margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px solid var(--border);
+    }
+    .theme-toggle {
+      margin-top: 1.2rem; display: inline-flex; align-items: center; gap: 0.5rem; align-self: flex-start;
+      padding: 0.4rem 0.85rem; border-radius: 100px; border: 1px solid var(--border); background: var(--card);
+      color: var(--muted); font-family: var(--sans); font-size: 0.74rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+    }
+    .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+    .theme-toggle svg { width: 14px; height: 14px; }
+    .theme-toggle .icon-dark { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-light { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-dark { display: inline; }
+    .sidebar-contact { margin-top: auto; padding-top: 1.5rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .sidebar-contact a { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; text-decoration: none; color: var(--muted); transition: color 0.2s, transform 0.15s; }
+    .sidebar-contact a:hover { color: var(--accent); transform: translateX(3px); }
+    .sidebar-contact a svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* ─── MAIN ─── */
+    .main { flex: 1; min-width: 0; padding: 3rem 2.5rem 4rem; }
+    .main > * { position: relative; z-index: 1; }
+    .section { margin-bottom: 2.5rem; }
+    .section-label {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent);
+      font-weight: 600; margin-bottom: 1.2rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+    }
+    .page-title { font-family: var(--serif); font-size: 1.9rem; color: var(--ink); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 0.6rem; }
+    .intro { font-size: 0.95rem; line-height: 1.8; max-width: 620px; }
+
+    /* ─── NOTE ─── */
+    .reading-note {
+      display: flex; gap: 0.8rem; align-items: flex-start; max-width: 640px;
+      background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem; margin: 1.2rem 0 0; font-size: 0.85rem; line-height: 1.6;
+    }
+    .reading-note svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .reading-note strong { color: var(--ink); }
+
+    /* ─── BOOKSHELF ─── */
+    .shelf-stage { margin: 0.5rem 0 0; }
+    .shelf-scroll { overflow-x: auto; padding: 1.6rem 0.2rem 0; }
+    .shelf { display: flex; align-items: flex-end; gap: 7px; min-height: 210px; width: max-content; min-width: 100%; }
+    .spine {
+      border-radius: 10px 10px 3px 3px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform 0.25s ease; position: relative;
+      box-shadow: inset -6px 0 10px rgba(0,0,0,0.12); flex-shrink: 0;
+      transform: rotate(var(--tilt, 0deg)); transform-origin: bottom center;
+    }
+    .spine span {
+      writing-mode: vertical-rl; text-orientation: mixed; font-size: 12px; font-weight: 500;
+      letter-spacing: 0.02em; white-space: nowrap; padding: 12px 0;
+      max-height: 170px; overflow: hidden; text-overflow: ellipsis;
+    }
+    .spine:hover { transform: translateY(-14px) rotate(var(--tilt, 0deg)); }
+    /* decorative cluster + pet at the end of the shelf */
+    .shelf-deco { display: flex; align-items: flex-end; gap: 7px; flex-shrink: 0; margin-left: 4px; }
+    .flat-stack { display: flex; flex-direction: column; gap: 5px; justify-content: flex-end; }
+    .flat-book { height: 17px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+    .shelf-pet { height: 88px; width: auto; align-self: flex-end; object-fit: contain; }
+    .shelf-base {
+      height: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 3px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.07); width: 100%; max-width: 100%;
+    }
+    .shelf-hint { text-align: center; font-size: 0.7rem; color: var(--muted); margin-top: 0.7rem; font-style: italic; }
+
+    /* ─── FILTER ─── */
+    .book-filter { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 1.8rem 0 1.2rem; }
+    .book-filter button {
+      font-family: var(--sans); font-size: 0.74rem; font-weight: 500; padding: 0.32rem 0.85rem;
+      border-radius: 100px; cursor: pointer; border: 1px solid var(--border); background: var(--card);
+      color: var(--muted); transition: all 0.2s;
+    }
+    .book-filter button:hover { color: var(--ink); border-color: var(--accent); }
+    .book-filter button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* ─── BOOK CARDS ─── */
+    .book-list { display: flex; flex-direction: column; gap: 1rem; }
+    .book {
+      display: grid; grid-template-columns: 84px 1fr; gap: 1.1rem; align-items: start;
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.2rem;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      scroll-margin-top: 1.5rem;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .book:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(180,74,47,0.10); border-color: var(--accent); }
+    }
+    .book.flash { animation: flash 1.4s ease; }
+    @keyframes flash {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(180,74,47,0); border-color: var(--border); }
+      20% { box-shadow: 0 0 0 4px var(--accent-soft); border-color: var(--accent); }
+    }
+    .book-cover {
+      width: 84px; height: 122px; border-radius: 6px; overflow: hidden; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      font-family: var(--serif); font-size: 0.78rem; color: #f7f2ec; padding: 0.4rem; line-height: 1.3;
+    }
+    .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .book-title { font-family: var(--serif); font-size: 1.08rem; color: var(--ink); line-height: 1.35; }
+    .book-subtitle { font-family: var(--serif); font-style: italic; font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; line-height: 1.4; }
+    .book-byline { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+    .book-byline .author { color: var(--body); font-weight: 500; }
+    .book-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+    .book-meta span { font-size: 0.66rem; padding: 0.18rem 0.6rem; border-radius: 100px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+    .book-status { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; padding: 0.15rem 0.55rem; border-radius: 100px; }
+    .status-reading { background: #eef3f9; color: #5b7fa6; }
+    .status-finished { background: #edf5f0; color: #5a9472; }
+    .status-want { background: #f5f1e8; color: #a8924f; }
+    :root[data-theme="dark"] .status-reading { background: #1f2a36; color: #8fb2d8; }
+    :root[data-theme="dark"] .status-finished { background: #1c2c22; color: #82c79b; }
+    :root[data-theme="dark"] .status-want { background: #2c2716; color: #cdb673; }
+    .book-feeling { font-size: 0.86rem; color: var(--body); margin-top: 0.7rem; line-height: 1.65; }
+    .book-feeling .feeling-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; display: block; margin-bottom: 0.15rem; }
+    .empty-note { font-size: 0.85rem; color: var(--muted); padding: 0.5rem 0; }
+
+    /* ─── COMMENTS ─── */
+    .comments-intro { font-size: 0.88rem; color: var(--muted); margin-bottom: 1rem; max-width: 620px; }
+    .comments-box { border: 1px dashed var(--border); border-radius: 12px; padding: 1.5rem; background: var(--card); max-width: 720px; }
+    .comments-placeholder { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+    .comments-placeholder svg { width: 20px; height: 20px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .comments-placeholder code { background: var(--accent-soft); color: var(--accent); padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.8rem; }
+
+    .footer-note { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.76rem; color: var(--muted); }
+    .footer-note a { color: var(--accent); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 820px) {
+      .page-wrapper { flex-direction: column; }
+      .sidebar {
+        width: 100%; position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--border);
+        padding: 2rem 1.5rem 1.5rem; flex-direction: row; flex-wrap: wrap; gap: 1.2rem; align-items: flex-start;
+      }
+      .photo-wrap { width: 110px; height: 130px; }
+      .sidebar-info { flex: 1; min-width: 180px; }
+      .sidebar-nav { flex-direction: row; flex-wrap: wrap; gap: 0.1rem 1.2rem; margin-top: 0; width: 100%; }
+      .theme-toggle { margin-top: 0; }
+      .sidebar-contact { flex-direction: row; flex-wrap: wrap; gap: 0.3rem 1rem; padding-top: 0; margin-top: 0; width: 100%; }
+      .main { padding: 2rem 1.5rem 3rem; }
+      .cursor-glow { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .cursor-glow, .photo-wrap .sidebar-photo.pixel { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<div class="page-wrapper">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <aside class="sidebar">
+    <div class="photo-wrap">
+      <img class="sidebar-photo" src="./chan1.JPG" alt="Jiamu Tang" />
+      <img class="sidebar-photo pixel" src="./chan-pixel-cartoon.png" alt="" aria-hidden="true" />
+    </div>
+    <div class="sidebar-info">
+      <h1>Jiamu Tang</h1>
+      <div class="role">Incoming PhD Student</div>
+      <div class="affiliation">Department of Computer Science<br />Boston University</div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html#about">About</a>
+      <a href="index.html#news">News</a>
+      <a href="index.html#publications">Publications</a>
+      <a href="index.html#cv">CV</a>
+      <div class="nav-group-label">Beyond research</div>
+      <a href="books.html" class="active">Reading Nook</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg class="icon-light" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
+      <svg class="icon-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+      <span id="themeLabel">Dark mode</span>
+    </button>
+    <div class="sidebar-contact">
+      <a href="mailto:jtang41@u.rochester.edu" title="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+        jtang41@u.rochester.edu
+      </a>
+      <a href="https://github.com/itschanism" target="_blank" title="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="main">
+
+    <section class="section">
+      <div class="page-title">The Reading Nook</div>
+      <p class="intro">
+        A growing shelf of books that stayed with me — what I felt after the last page,
+        where I read them, and the editions I held. Reading is half of how I think about
+        <strong style="color:var(--ink)">embodiment, attention, and the self</strong>,
+        so this corner is part journal, part conversation.
+      </p>
+
+      <div class="reading-note">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+        <div><strong>A note:</strong> I've just started sharing here, and there are tons of books I've read that aren't on the shelf yet. I'll wrap them up and add them as I remember — so consider this a shelf that's still filling in.</div>
+      </div>
+    </section>
+
+    <!-- ─── BOOKSHELF (browse) ─── -->
+    <section class="section">
+      <div class="shelf-stage">
+        <div class="shelf-scroll">
+          <div class="shelf" id="shelf"></div>
+        </div>
+        <div class="shelf-base"></div>
+        <div class="shelf-hint">hover a spine to lift it · click to jump to its reflection</div>
+      </div>
+    </section>
+
+    <!-- ─── DETAILED CARDS ─── -->
+    <section class="section">
+      <div class="section-label">On the shelf</div>
+      <div class="book-filter" id="bookFilter">
+        <button class="active" data-filter="all">All</button>
+        <button data-filter="reading">Currently reading</button>
+        <button data-filter="finished">Finished</button>
+        <button data-filter="want">Want to read</button>
+      </div>
+      <div class="book-list" id="bookList"></div>
+      <p class="empty-note" id="bookEmpty" style="display:none;">No books in this shelf yet.</p>
+    </section>
+
+    <!-- ─── COMMENTS ─── -->
+    <section class="section" id="comments">
+      <div class="section-label">Comments</div>
+      <p class="comments-intro">Read one of these too? Disagree with how I felt? Leave a note — I'd love to hear it.</p>
+      <div class="comments-box">
+        <!-- ════════════════════════════════════════════════════════════
+             GISCUS COMMENTS — to activate (one-time setup, see chat):
+               1. Repo Settings -> enable the "Discussions" feature.
+               2. Install the giscus app: https://github.com/apps/giscus
+               3. Go to https://giscus.app, enter itschanism/itschanism.github.io,
+                  it generates a <script> tag with your repo-id / category-id.
+               4. Replace the placeholder div below with that generated tag.
+             ════════════════════════════════════════════════════════════ -->
+        <div class="comments-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+          <div>
+            <strong style="color:var(--ink)">Comments will appear here once Giscus is connected.</strong><br/>
+            Follow the setup steps in the chat, then paste your generated <code>&lt;script&gt;</code> tag in place of this box.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      <p>&copy; 2026 Jiamu Tang · <a href="index.html">Back to home</a></p>
+    </div>
+
+  </main>
+</div>
+
+<!-- Your reading list lives in books-data.js — edit that one file to add books. -->
+<script src="./books-data.js"></script>
+<script>
+  // The BOOKS list is defined in books-data.js (loaded just above).
+
+  // artistic pastel palette {spine bg, label text}
+  const PALETTE = [
+    {bg:'#E8A0A8', text:'#7a2f38'},
+    {bg:'#9ED2BD', text:'#2f6b51'},
+    {bg:'#F2C879', text:'#8a6a1e'},
+    {bg:'#B6A6E0', text:'#4f3f86'},
+    {bg:'#88BFE0', text:'#2b5a78'},
+    {bg:'#E9A77C', text:'#8a4f28'},
+    {bg:'#C9D38A', text:'#5c6a28'},
+    {bg:'#E0A6C4', text:'#7d3560'}
+  ];
+  const TILTS = [0, -6, 0, 5, -3, 0, 4, -5];
+  const heightFor = t => 140 + ((t.length * 7) % 62);
+  const statusLabel = s => s === 'reading' ? 'Currently reading' : s === 'want' ? 'Want to read' : 'Finished';
+  function esc(t){ const d=document.createElement('div'); d.textContent = t==null?'':t; return d.innerHTML; }
+
+  function render(filter) {
+    const shelf = document.getElementById('shelf');
+    const list = document.getElementById('bookList');
+    const empty = document.getElementById('bookEmpty');
+    shelf.innerHTML = ''; list.innerHTML = '';
+    let shown = 0;
+
+    BOOKS.forEach((b, i) => {
+      const status = b.status || 'finished';
+      if (filter !== 'all' && status !== filter) return;
+      shown++;
+      const c = PALETTE[i % PALETTE.length];
+
+      // spine
+      const spine = document.createElement('div');
+      spine.className = 'spine';
+      spine.style.height = heightFor(b.title) + 'px';
+      spine.style.width = (29 + (i % 4) * 2) + 'px';
+      spine.style.background = c.bg;
+      spine.style.setProperty('--tilt', TILTS[i % TILTS.length] + 'deg');
+      spine.innerHTML = '<span style="color:' + c.text + ';">' + esc(b.title) + '</span>';
+      spine.title = b.title + ' — ' + b.author;
+      spine.addEventListener('click', () => {
+        const card = document.getElementById('book-' + i);
+        if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.remove('flash'); void card.offsetWidth; card.classList.add('flash'); }
+      });
+      shelf.appendChild(spine);
+
+      // card
+      const meta = [];
+      if (b.date) meta.push('<span>' + esc(b.date) + '</span>');
+      if (b.place) meta.push('<span>' + esc(b.place) + '</span>');
+      if (b.language) meta.push('<span>' + esc(b.language) + '</span>');
+      if (b.translator) meta.push('<span>trans. ' + esc(b.translator) + '</span>');
+      const cover = b.cover
+        ? '<img src="' + esc(b.cover) + '" alt="' + esc(b.title) + ' cover" />'
+        : esc(b.title);
+      const feeling = b.feeling
+        ? '<div class="book-feeling"><span class="feeling-label">After reading</span>' + esc(b.feeling).replace(/\n/g, '<br>') + '</div>'
+        : '';
+      const card = document.createElement('div');
+      card.className = 'book'; card.id = 'book-' + i;
+      card.innerHTML =
+        '<div class="book-cover" style="background:' + (b.cover ? 'transparent' : c.bg) + ';color:' + c.text + ';">' + cover + '</div>' +
+        '<div class="book-body">' +
+          '<span class="book-status status-' + status + '">' + statusLabel(status) + '</span>' +
+          '<div class="book-title" style="margin-top:0.4rem;">' + esc(b.title) + '</div>' +
+          (b.titleEn ? '<div class="book-subtitle">' + esc(b.titleEn) + '</div>' : '') +
+          '<div class="book-byline"><span class="author">' + esc(b.author) + '</span></div>' +
+          '<div class="book-meta">' + meta.join('') + '</div>' + feeling +
+        '</div>';
+      list.appendChild(card);
+    });
+
+    // decorative flat stack + the shelf dog
+    if (shown > 0) {
+      const deco = document.createElement('div');
+      deco.className = 'shelf-deco';
+      deco.innerHTML =
+        '<div class="flat-stack">' +
+          '<div class="flat-book" style="background:#F2C879; width:60px;"></div>' +
+          '<div class="flat-book" style="background:#88BFE0; width:52px;"></div>' +
+        '</div>' +
+        '<img class="shelf-pet" src="./dog.png" alt="a little shelf dog" ' +
+          'onerror="this.style.display=\'none\'" />';
+      shelf.appendChild(deco);
+    }
+
+    empty.style.display = shown === 0 ? '' : 'none';
+  }
+
+  const filterBtns = document.querySelectorAll('#bookFilter button');
+  filterBtns.forEach(btn => btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render(btn.dataset.filter);
+  }));
+  render('all');
+
+  // ─── Dark mode ───
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  // Light mode is always the default; visitors can switch to dark with the toggle.
+  function syncLabel(){ themeLabel.textContent = root.getAttribute('data-theme') === 'dark' ? 'Light mode' : 'Dark mode'; }
+  syncLabel();
+  themeToggle.addEventListener('click', () => { root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); syncLabel(); });
+
+  // ─── Cursor spotlight ───
+  const glow = document.getElementById('cursorGlow');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (fine && !reduce) {
+    document.addEventListener('mousemove', e => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; glow.style.opacity = '1'; });
+    document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+  }
+</script>
+
+</body>
+</html>

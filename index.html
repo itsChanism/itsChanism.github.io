@@ -198,6 +198,10 @@
       transition: color 0.2s;
     }
     .sidebar-nav a:hover { color: var(--accent); }
+    .nav-group-label {
+      width: 100%; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--muted); margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px solid var(--border);
+    }
 
     .sidebar-contact {
       margin-top: auto;
@@ -684,6 +688,8 @@
       <a href="#news">News</a>
       <a href="#publications">Publications</a>
       <a href="#cv">CV</a>
+      <div class="nav-group-label">Beyond research</div>
+      <a href="books.html">Reading Nook</a>
     </nav>
 
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
@@ -1006,9 +1012,7 @@
   const root = document.documentElement;
   const themeToggle = document.getElementById('themeToggle');
   const themeLabel = document.getElementById('themeLabel');
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    root.setAttribute('data-theme', 'dark');
-  }
+  // Light mode is always the default; visitors can switch to dark with the toggle.
   function syncLabel() {
     themeLabel.textContent = root.getAttribute('data-theme') === 'dark' ? 'Light mode' : 'Dark mode';
   }
