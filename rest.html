@@ -133,6 +133,7 @@
     .rate i.on { background: var(--accent); }
     .rest-activity { font-family: var(--serif); font-size: 1.05rem; color: var(--ink); line-height: 1.4; margin-top: 0.4rem; }
     .rest-note { font-size: 0.86rem; color: var(--body); margin-top: 0.4rem; line-height: 1.6; }
+    .rest-note-en { font-family: var(--serif); font-style: italic; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.6; padding-top: 0.4rem; border-top: 1px dashed var(--border); }
     .empty-note { font-size: 0.85rem; color: var(--muted); padding: 0.5rem 0; }
 
     .footer-note { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.76rem; color: var(--muted); }
@@ -269,7 +270,8 @@
           rateDots(r.rating || 0) +
         '</div>' +
         '<div class="rest-activity">' + esc(r.activity) + '</div>' +
-        (r.note ? '<div class="rest-note">' + esc(r.note) + '</div>' : '');
+        (r.note ? '<div class="rest-note">' + esc(r.note) + '</div>' : '') +
+        (r.noteEn ? '<div class="rest-note-en">' + esc(r.noteEn) + '</div>' : '');
       list.appendChild(entry);
     });
     empty.style.display = items.length === 0 ? '' : 'none';
