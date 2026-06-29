@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Active Rest · Jiamu Tang</title>
+  <meta name="description" content="Jiamu Tang's active rest log — how I actually recharge during the PhD." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1a1a; --body: #3a3a3a; --muted: #777;
+      --accent: #b44a2f; --accent-soft: #f6efe9;
+      --bg: #faf8f5; --card: #ffffff; --border: #e8e4de;
+      --serif: 'Newsreader', 'Georgia', serif;
+      --sans: 'DM Sans', 'Helvetica Neue', sans-serif;
+      --sidebar-w: 280px;
+    }
+    :root[data-theme="dark"] {
+      --ink: #f0ece5; --body: #cfc8bf; --muted: #8a847b;
+      --accent: #e0714f; --accent-soft: #2a201a;
+      --bg: #16140f; --card: #1d1a14; --border: #33302a;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans); background: var(--bg); color: var(--body);
+      line-height: 1.7; font-size: 15px; -webkit-font-smoothing: antialiased;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+    .cursor-glow {
+      position: fixed; top: 0; left: 0; width: 380px; height: 380px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(180,74,47,0.10), transparent 65%);
+      pointer-events: none; transform: translate(-50%, -50%); opacity: 0;
+      transition: opacity 0.35s ease; z-index: 0;
+    }
+    :root[data-theme="dark"] .cursor-glow { background: radial-gradient(circle, rgba(224,113,79,0.14), transparent 65%); }
+    .page-wrapper { display: flex; max-width: 1100px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 1; }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0; position: sticky; top: 0; height: 100vh;
+      padding: 3rem 1.8rem 2rem 1.5rem; display: flex; flex-direction: column;
+      border-right: 1px solid var(--border); overflow-y: auto;
+    }
+    .photo-wrap { position: relative; width: 160px; height: 190px; margin-bottom: 1.3rem; cursor: pointer; }
+    .photo-wrap .sidebar-photo {
+      position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 8px;
+      object-fit: cover; border: 3px solid var(--card); box-shadow: 0 2px 16px rgba(0,0,0,0.06); display: block;
+    }
+    .photo-wrap .sidebar-photo.pixel { image-rendering: pixelated; opacity: 1; transition: opacity 0.5s ease; z-index: 2; }
+    .photo-wrap:hover .sidebar-photo.pixel { opacity: 0; }
+    .sidebar h1 { font-family: var(--serif); font-weight: 400; font-size: 1.55rem; color: var(--ink); letter-spacing: -0.02em; line-height: 1.25; }
+    .sidebar .role { font-size: 0.82rem; color: var(--accent); font-weight: 500; margin-top: 0.3rem; }
+    .sidebar .affiliation { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; line-height: 1.5; }
+    .sidebar-nav { margin-top: 1.8rem; display: flex; flex-direction: column; gap: 0.15rem; }
+    .sidebar-nav a { font-size: 0.82rem; text-decoration: none; color: var(--body); padding: 0.35rem 0; font-weight: 500; transition: color 0.2s; }
+    .sidebar-nav a:hover, .sidebar-nav a.active { color: var(--accent); }
+    .nav-group-label {
+      width: 100%; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--muted); margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px solid var(--border);
+    }
+    .theme-toggle {
+      margin-top: 1.2rem; display: inline-flex; align-items: center; gap: 0.5rem; align-self: flex-start;
+      padding: 0.4rem 0.85rem; border-radius: 100px; border: 1px solid var(--border); background: var(--card);
+      color: var(--muted); font-family: var(--sans); font-size: 0.74rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+    }
+    .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+    .theme-toggle svg { width: 14px; height: 14px; }
+    .theme-toggle .icon-dark { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-light { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-dark { display: inline; }
+    .sidebar-contact { margin-top: auto; padding-top: 1.5rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .sidebar-contact a { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; text-decoration: none; color: var(--muted); transition: color 0.2s, transform 0.15s; }
+    .sidebar-contact a:hover { color: var(--accent); transform: translateX(3px); }
+    .sidebar-contact a svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* ─── MAIN ─── */
+    .main { flex: 1; min-width: 0; padding: 3rem 2.5rem 4rem; }
+    .main > * { position: relative; z-index: 1; }
+    .section { margin-bottom: 2.5rem; }
+    .section-label {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent);
+      font-weight: 600; margin-bottom: 1.2rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+    }
+    .page-title { font-family: var(--serif); font-size: 1.9rem; color: var(--ink); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 0.6rem; }
+    .intro { font-size: 0.95rem; line-height: 1.8; max-width: 620px; }
+
+    .reading-note {
+      display: flex; gap: 0.8rem; align-items: flex-start; max-width: 640px;
+      background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem; margin: 1.2rem 0 0; font-size: 0.85rem; line-height: 1.6;
+    }
+    .reading-note svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .reading-note strong { color: var(--ink); }
+
+    /* ─── "I'M TIRED" ZONE ─── */
+    .tired-zone { text-align: center; padding: 1.5rem 1rem 0.5rem; max-width: 640px; }
+    .tired-btn {
+      font-family: var(--sans); font-size: 0.95rem; font-weight: 600; color: #fff;
+      background: var(--accent); border: none; border-radius: 100px; padding: 0.85rem 2rem;
+      cursor: pointer; box-shadow: 0 6px 20px rgba(180,74,47,0.22); transition: transform 0.18s ease, box-shadow 0.18s ease;
+      display: inline-flex; align-items: center; gap: 0.55rem;
+    }
+    .tired-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(180,74,47,0.28); }
+    .tired-btn:active { transform: translateY(0); }
+    .tired-btn svg { width: 18px; height: 18px; }
+    .suggestion {
+      margin: 1.4rem auto 0; max-width: 460px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.3rem 1.4rem; opacity: 0; transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease; min-height: 0;
+    }
+    .suggestion.show { opacity: 1; transform: translateY(0); }
+    .suggestion .s-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 600; }
+    .suggestion .s-text { font-family: var(--serif); font-size: 1.15rem; color: var(--ink); line-height: 1.4; margin-top: 0.35rem; }
+    .suggestion .s-meta { font-size: 0.76rem; color: var(--muted); margin-top: 0.5rem; }
+
+    /* ─── REST LOG ─── */
+    .rest-list { display: flex; flex-direction: column; gap: 0.9rem; }
+    .rest-entry {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.2rem;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .rest-entry:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(180,74,47,0.10); border-color: var(--accent); }
+    }
+    .rest-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .rest-date { font-size: 0.7rem; color: var(--muted); font-weight: 500; letter-spacing: 0.02em; }
+    .rate { display: inline-flex; gap: 4px; align-items: center; }
+    .rate i { width: 9px; height: 9px; border-radius: 50%; background: var(--border); display: inline-block; }
+    .rate i.on { background: var(--accent); }
+    .rest-activity { font-family: var(--serif); font-size: 1.05rem; color: var(--ink); line-height: 1.4; margin-top: 0.4rem; }
+    .rest-note { font-size: 0.86rem; color: var(--body); margin-top: 0.4rem; line-height: 1.6; }
+    .empty-note { font-size: 0.85rem; color: var(--muted); padding: 0.5rem 0; }
+
+    .footer-note { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.76rem; color: var(--muted); }
+    .footer-note a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 820px) {
+      .page-wrapper { flex-direction: column; }
+      .sidebar {
+        width: 100%; position: relative; height: auto; border-right: none; border-bottom: 1px solid var(--border);
+        padding: 2rem 1.5rem 1.5rem; flex-direction: row; flex-wrap: wrap; gap: 1.2rem; align-items: flex-start;
+      }
+      .photo-wrap { width: 110px; height: 130px; }
+      .sidebar-info { flex: 1; min-width: 180px; }
+      .sidebar-nav { flex-direction: row; flex-wrap: wrap; gap: 0.1rem 1.2rem; margin-top: 0; width: 100%; }
+      .theme-toggle { margin-top: 0; }
+      .sidebar-contact { flex-direction: row; flex-wrap: wrap; gap: 0.3rem 1rem; padding-top: 0; margin-top: 0; width: 100%; }
+      .main { padding: 2rem 1.5rem 3rem; }
+      .cursor-glow { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .cursor-glow, .photo-wrap .sidebar-photo.pixel { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<div class="page-wrapper">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <aside class="sidebar">
+    <div class="photo-wrap">
+      <img class="sidebar-photo" src="./chan1.JPG" alt="Jiamu Tang" />
+      <img class="sidebar-photo pixel" src="./chan-pixel-cartoon.png" alt="" aria-hidden="true" />
+    </div>
+    <div class="sidebar-info">
+      <h1>Jiamu Tang</h1>
+      <div class="role">Incoming PhD Student</div>
+      <div class="affiliation">Department of Computer Science<br />Boston University</div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html#about">About</a>
+      <a href="index.html#news">News</a>
+      <a href="index.html#publications">Publications</a>
+      <a href="index.html#cv">CV</a>
+      <div class="nav-group-label">Beyond research</div>
+      <a href="books.html">Reading Nook</a>
+      <a href="rest.html" class="active">Active Rest</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <svg class="icon-light" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
+      <svg class="icon-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+      <span id="themeLabel">Dark mode</span>
+    </button>
+    <div class="sidebar-contact">
+      <a href="mailto:jtang41@u.rochester.edu" title="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+        jtang41@u.rochester.edu
+      </a>
+      <a href="https://github.com/itschanism" target="_blank" title="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="main">
+
+    <section class="section">
+      <div class="page-title">Active Rest</div>
+      <p class="intro">
+        A PhD runs on a strange kind of fatigue: more mental than physical. So this is a log of
+        <strong style="color:var(--ink)">active rest</strong> — the kind that actually restores me,
+        not the empty scrolling that just passes time. When i'm too tired to decide, i let the button
+        below pick something that has worked before.
+      </p>
+
+      <div class="reading-note">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+        <div><strong>A note:</strong> i just started keeping this, so it's short for now. i'll add a line whenever i find a way to rest that genuinely helps.</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="tired-zone">
+        <button class="tired-btn" id="tiredBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          i'm tired — suggest a rest
+        </button>
+        <div class="suggestion" id="suggestion" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">Rest log</div>
+      <div class="rest-list" id="restList"></div>
+      <p class="empty-note" id="restEmpty" style="display:none;">No entries yet.</p>
+    </section>
+
+    <div class="footer-note">
+      <p>&copy; 2026 Jiamu Tang · <a href="index.html">Back to home</a></p>
+    </div>
+
+  </main>
+</div>
+
+<!-- Your rest entries live in rest-data.js — edit that one file to add entries. -->
+<script src="./rest-data.js"></script>
+<script>
+  // The REST list is defined in rest-data.js (loaded just above).
+  function esc(t){ const d=document.createElement('div'); d.textContent = t==null?'':t; return d.innerHTML; }
+
+  function rateDots(n) {
+    let s = '<span class="rate" title="' + n + ' of 5">';
+    for (let i = 1; i <= 5; i++) s += '<i class="' + (i <= n ? 'on' : '') + '"></i>';
+    return s + '</span>';
+  }
+
+  // ─── Render rest log (most recent first) ───
+  function renderRest() {
+    const list = document.getElementById('restList');
+    const empty = document.getElementById('restEmpty');
+    list.innerHTML = '';
+    const items = (typeof REST !== 'undefined' ? REST : []);
+    items.forEach(r => {
+      const entry = document.createElement('div');
+      entry.className = 'rest-entry';
+      entry.innerHTML =
+        '<div class="rest-top">' +
+          '<span class="rest-date">' + esc(r.date) + '</span>' +
+          rateDots(r.rating || 0) +
+        '</div>' +
+        '<div class="rest-activity">' + esc(r.activity) + '</div>' +
+        (r.note ? '<div class="rest-note">' + esc(r.note) + '</div>' : '');
+      list.appendChild(entry);
+    });
+    empty.style.display = items.length === 0 ? '' : 'none';
+  }
+  renderRest();
+
+  // ─── "I'm tired" suggestion (prefers higher-rated rests) ───
+  const tiredBtn = document.getElementById('tiredBtn');
+  const suggestion = document.getElementById('suggestion');
+  tiredBtn.addEventListener('click', () => {
+    const all = (typeof REST !== 'undefined' ? REST : []);
+    if (!all.length) {
+      suggestion.innerHTML = '<div class="s-text">add a few rests to your log first, then i\'ll have something to suggest.</div>';
+      suggestion.classList.add('show');
+      return;
+    }
+    const good = all.filter(r => (r.rating || 0) >= 4);
+    const pool = good.length ? good : all;
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    suggestion.classList.remove('show');
+    // brief flicker so repeated clicks feel responsive
+    void suggestion.offsetWidth;
+    suggestion.innerHTML =
+      '<div class="s-label">maybe try</div>' +
+      '<div class="s-text">' + esc(pick.activity) + '</div>' +
+      '<div class="s-meta">' + ((pick.rating || 0) >= 4 ? 'worked well for you before · ' : '') + esc(pick.date) + '</div>';
+    suggestion.classList.add('show');
+  });
+
+  // ─── Dark mode (light is the default) ───
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  function syncLabel(){ themeLabel.textContent = root.getAttribute('data-theme') === 'dark' ? 'Light mode' : 'Dark mode'; }
+  syncLabel();
+  themeToggle.addEventListener('click', () => { root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); syncLabel(); });
+
+  // ─── Cursor spotlight ───
+  const glow = document.getElementById('cursorGlow');
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (fine && !reduce) {
+    document.addEventListener('mousemove', e => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; glow.style.opacity = '1'; });
+    document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+  }
+</script>
+
+</body>
+</html>
