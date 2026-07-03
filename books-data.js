@@ -55,6 +55,31 @@ const BOOKS = [
   ===== end example books ===== */
 
   {
+    title: "当机器人学会工作",
+    titleEn: "The Machine Age: An Idea, a History, a Warning (Robert Skidelsky)",
+    author: "罗伯特·斯基德尔斯基 (Robert Skidelsky)",
+    translator: "",
+    language: "Chinese",
+    date: "Currently",
+    place: "单向空间",
+    status: "reading",
+    feeling: "",
+    cover: ""
+  },
+
+  {
+    title: "What If... Collected Thought Experiments in Philosophy",
+    author: "Peg Tittle",
+    translator: "",
+    language: "English",
+    date: "Currently",
+    place: "单向空间",
+    status: "reading",
+    feeling: "",
+    cover: ""
+  },
+
+  {
     title: "人生的智慧",
     titleEn: "The Wisdom of Life (Arthur Schopenhauer; orig. Aphorismen zur Lebensweisheit)",
     author: "叔本华 (Arthur Schopenhauer)",
