@@ -657,6 +657,51 @@
     }
     .pub-links a:hover { border-color: var(--accent); color: var(--accent); }
 
+    /* ─── SELECTED PROJECTS ─── */
+    .project-intro {
+      max-width: 620px; margin: -0.25rem 0 1.2rem;
+      color: var(--muted); font-size: 0.88rem; line-height: 1.65;
+    }
+    .project-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .project-card {
+      display: flex; flex-direction: column; min-width: 0;
+      border: 1px solid var(--border); border-radius: 12px;
+      background: var(--card); overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    .project-card:last-child { grid-column: 1 / -1; }
+    @media (hover: hover) and (pointer: fine) {
+      .project-card:hover {
+        transform: translateY(-3px); border-color: rgba(180,74,47,0.35);
+        box-shadow: 0 10px 28px rgba(180,74,47,0.10);
+      }
+    }
+    .project-image {
+      width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+      border-bottom: 1px solid var(--border); background: var(--accent-soft);
+    }
+    .project-card:last-child .project-image { aspect-ratio: 2.35 / 1; }
+    .project-body { padding: 1rem 1.05rem 1.1rem; display: flex; flex-direction: column; flex: 1; }
+    .project-kicker {
+      color: var(--accent); font-size: 0.66rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .project-title {
+      margin-top: 0.2rem; color: var(--ink); font-family: var(--serif);
+      font-size: 1.06rem; font-weight: 400; line-height: 1.35;
+    }
+    .project-summary { margin-top: 0.45rem; color: var(--body); font-size: 0.82rem; line-height: 1.6; }
+    .project-links { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; padding-top: 0.8rem; }
+    .project-links a {
+      color: var(--body); font-size: 0.7rem; font-weight: 500; text-decoration: none;
+      border: 1px solid var(--border); border-radius: 100px; padding: 0.22rem 0.65rem;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .project-links a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
     /* ─── CV LINK ─── */
     .cv-link-card {
       display: flex; align-items: center; gap: 1rem;
@@ -714,6 +759,9 @@
         gap: 0.3rem 1rem; padding-top: 0; margin-top: 0; width: 100%;
       }
       .main { padding: 2rem 1.5rem 3rem; }
+      .project-grid { grid-template-columns: 1fr; }
+      .project-card:last-child { grid-column: auto; }
+      .project-card:last-child .project-image { aspect-ratio: 16 / 9; }
       .pub { grid-template-columns: 1fr; }
       .pub-thumb { width: 100%; height: 160px; }
       .news-map-container { min-height: 320px; }
@@ -803,6 +851,7 @@
     <nav class="sidebar-nav">
       <a href="#about">About</a>
       <a href="#news">News</a>
+      <a href="#projects">Projects</a>
       <a href="#publications">Publications</a>
       <a href="#cv">CV</a>
       <div class="nav-group-label">Beyond research</div>
@@ -1035,6 +1084,51 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ─── SELECTED PROJECTS ─── -->
+    <section class="section fade-in" id="projects">
+      <div class="section-label">Selected Projects</div>
+      <p class="project-intro">Three projects exploring how interactive systems can make virtual abilities, expression, and emotional reflection feel more intuitive and human.</p>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <img class="project-image" src="./teaser.png" alt="Capability at a Glance project interface and avatar capability cues" />
+          <div class="project-body">
+            <div class="project-kicker">Virtual Reality · Avatar Design</div>
+            <h2 class="project-title">Capability at a Glance</h2>
+            <p class="project-summary">Developed and validated design guidelines that help augmented avatars communicate what they can do and how people can activate those capabilities.</p>
+            <div class="project-links">
+              <a href="https://doi.org/10.1145/3772318.3790609" target="_blank" rel="noopener noreferrer">Paper</a>
+              <a href="https://arxiv.org/abs/2603.06556" target="_blank" rel="noopener noreferrer">arXiv</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <img class="project-image" src="./face.png" alt="Tuning the Face facial-expression modulation examples for a VR self-avatar" />
+          <div class="project-body">
+            <div class="project-kicker">Virtual Reality · Facial Expression</div>
+            <h2 class="project-title">Tuning the Face</h2>
+            <p class="project-summary">Explores how modulating facial expressions can improve the communication and perceived realism of self-avatars in virtual reality.</p>
+            <div class="project-links">
+              <a href="https://doi.org/10.1145/3800645.3812871" target="_blank" rel="noopener noreferrer">Paper</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <img class="project-image" src="./process.png" alt="Dreamory AI-powered bedtime storytelling workflow" />
+          <div class="project-body">
+            <div class="project-kicker">AI-Human Interaction · Wellbeing</div>
+            <h2 class="project-title">Dreamory</h2>
+            <p class="project-summary">An AI-powered bedtime storytelling system designed to support emotional reframing before sleep and in-sleep memory consolidation.</p>
+            <div class="project-links">
+              <a href="https://doi.org/10.1145/3706599.3719850" target="_blank" rel="noopener noreferrer">Paper</a>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
