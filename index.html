@@ -657,48 +657,6 @@
     }
     .pub-links a:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* ─── FEATURED PROJECT ─── */
-    .project-feature {
-      background: var(--card);
-      border-color: var(--border);
-      box-shadow: 0 4px 18px rgba(0,0,0,0.035);
-    }
-    .fidelity-mark {
-      flex-direction: column;
-      gap: 0.1rem;
-      background: linear-gradient(145deg, var(--accent-soft), var(--card));
-      color: var(--accent);
-      text-transform: none;
-      letter-spacing: 0;
-      text-align: center;
-    }
-    .fidelity-mark strong {
-      font-family: var(--serif);
-      font-size: 3.2rem;
-      font-weight: 400;
-      line-height: 0.9;
-    }
-    .fidelity-mark span {
-      max-width: 130px;
-      font-size: 0.62rem;
-      line-height: 1.25;
-      color: var(--muted);
-    }
-    .project-summary {
-      max-width: 560px;
-      margin-top: 0.55rem;
-      font-size: 0.82rem;
-      line-height: 1.6;
-      color: var(--body);
-    }
-    .pub-links .pending {
-      font-size: 0.7rem;
-      padding: 0.18rem 0.55rem;
-      border: 1px dashed var(--border);
-      border-radius: 4px;
-      color: var(--muted);
-    }
-
     /* ─── CV LINK ─── */
     .cv-link-card {
       display: flex; align-items: center; gap: 1rem;
@@ -845,7 +803,6 @@
     <nav class="sidebar-nav">
       <a href="#about">About</a>
       <a href="#news">News</a>
-      <a href="#projects">Projects</a>
       <a href="#publications">Publications</a>
       <a href="#cv">CV</a>
       <div class="nav-group-label">Beyond research</div>
@@ -1036,13 +993,6 @@
       <div id="newsListView" style="display:none;">
         <div class="news-timeline">
           <div class="news-item featured">
-            <div class="news-badge">&#x1F4C4;</div>
-            <div class="news-body">
-              <div class="news-date">2026</div>
-              <div class="news-text">Submitted <a href="#projects"><em>Fidelity: Selective Body Tracking for Privacy-Preserving Social VR</em></a> to CHI 2027.</div>
-            </div>
-          </div>
-          <div class="news-item featured">
             <div class="news-badge">&#x1F393;</div>
             <div class="news-body">
               <div class="news-date">Fall 2026</div>
@@ -1083,28 +1033,6 @@
               <div class="news-date">2024</div>
               <div class="news-text">Joined the <a href="https://rochester-bear-lab.github.io/" target="_blank">BEAR Lab</a> at the University of Rochester, working on XR and avatar design with Prof. <a href="https://www.cs.rochester.edu/people/faculty/yan_yukang/index.html" target="_blank">Yukang Yan</a>.</div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─── FEATURED PROJECT ─── -->
-    <section class="section fade-in" id="projects">
-      <div class="section-label">Featured Project</div>
-      <div class="pub project-feature">
-        <div class="pub-thumb fidelity-mark" aria-hidden="true">
-          <strong>F</strong>
-          <span>selective body tracking for social VR</span>
-        </div>
-        <div class="pub-body">
-          <div class="pub-year">CHI 2027 · Submitted</div>
-          <div class="pub-title">Fidelity: Selective Body Tracking for Privacy-Preserving Social VR</div>
-          <div class="pub-authors">Jiankun Yang<sup>*</sup>, <span class="me">Jiamu Tang<sup>*</sup></span>, Yukang Yan <span style="font-size:0.72rem; color:var(--muted);">(<sup>*</sup>co-first authors)</span></div>
-          <div class="pub-venue">Submitted to the ACM CHI Conference on Human Factors in Computing Systems 2027 · Under review</div>
-          <p class="project-summary">Fidelity explores how selective body tracking can give people finer control over what their avatars reveal while preserving expressive, embodied interaction in social virtual reality.</p>
-          <div class="pub-links">
-            <a href="#publications">Related work</a>
-            <span class="pending">Demo video link pending upload</span>
           </div>
         </div>
       </div>
