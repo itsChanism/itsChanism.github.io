@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tuning the Face · Slides + Notes · Jiamu Tang</title>
+  <meta name="description" content="A slide-by-slide research walkthrough of Tuning the Face, a DIS 2026 project on modulating facial expressions for realistic self-avatars in virtual reality." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --body: #3a3a3a;
+      --muted: #777;
+      --accent: #b44a2f;
+      --accent-soft: #f6efe9;
+      --bg: #faf8f5;
+      --card: #fff;
+      --border: #e8e4de;
+      --serif: 'Newsreader', Georgia, serif;
+      --sans: 'DM Sans', 'Helvetica Neue', sans-serif;
+    }
+    :root[data-theme="dark"] {
+      --ink: #f0ece5;
+      --body: #cfc8bf;
+      --muted: #999188;
+      --accent: #e0714f;
+      --accent-soft: #2a201a;
+      --bg: #16140f;
+      --card: #1d1a14;
+      --border: #33302a;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--body);
+      font: 15px/1.7 var(--sans);
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    a { color: inherit; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px);
+    }
+    .topbar-inner {
+      width: min(1080px, calc(100% - 40px));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .back-link {
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .back-link:hover { color: var(--accent); }
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.38rem 0.72rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--muted);
+      font: 500 0.72rem var(--sans);
+      cursor: pointer;
+    }
+    .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+    main { width: min(940px, calc(100% - 40px)); margin: 0 auto; }
+    .hero { padding: 6.5rem 0 4.5rem; border-bottom: 1px solid var(--border); }
+    .eyebrow {
+      margin: 0 0 1rem;
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 820px;
+      margin: 0;
+      color: var(--ink);
+      font: 400 clamp(2.7rem, 7vw, 5.4rem)/0.98 var(--serif);
+      letter-spacing: -0.045em;
+    }
+    .subtitle {
+      max-width: 720px;
+      margin: 1.5rem 0 0;
+      color: var(--body);
+      font: 300 clamp(1.15rem, 2.2vw, 1.5rem)/1.45 var(--serif);
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 2rem;
+    }
+    .pill {
+      padding: 0.32rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .hero-links { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.5rem; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.58rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s, transform 0.15s;
+    }
+    .button:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+    .intro {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 2.5rem;
+      padding: 3.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .intro-label {
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .intro p { max-width: 700px; margin: 0; font: 400 1.18rem/1.6 var(--serif); color: var(--ink); }
+    .walkthrough { padding: 1rem 0 6rem; }
+    .chapter { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+    .chapter:last-child { border-bottom: 0; }
+    .chapter-head {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-bottom: 1.4rem;
+    }
+    .step {
+      padding-top: 0.4rem;
+      color: var(--accent);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    h2 { margin: 0; color: var(--ink); font: 400 clamp(1.8rem, 4vw, 2.8rem)/1.08 var(--serif); letter-spacing: -0.025em; }
+    figure { margin: 0; }
+    .slide-frame {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 18px 45px rgba(35, 27, 20, 0.08);
+    }
+    .slide-frame img { display: block; width: 100%; height: auto; }
+    figcaption {
+      max-width: 760px;
+      margin: 1.35rem auto 0;
+      padding-left: 1.1rem;
+      border-left: 2px solid var(--accent);
+      color: var(--body);
+      font-size: 0.94rem;
+    }
+    figcaption strong { display: block; margin-bottom: 0.3rem; color: var(--ink); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .footer {
+      padding: 2rem 0 3rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-align: center;
+    }
+    @media (max-width: 680px) {
+      .hero { padding: 4.5rem 0 3.2rem; }
+      .intro, .chapter-head { grid-template-columns: 1fr; gap: 0.65rem; }
+      .chapter { padding: 3.5rem 0; }
+      .slide-frame { border-radius: 6px; }
+      figcaption { margin-top: 1rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="back-link" href="./index.html#publications">← Jiamu Tang · Publications</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode"><span id="themeIcon">◐</span><span id="themeLabel">Dark mode</span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">DIS 2026 · Research walkthrough</p>
+      <h1>Tuning the Face</h1>
+      <p class="subtitle">Modulating facial expressions for realistic self-avatars in virtual reality.</p>
+      <div class="meta" aria-label="Project metadata">
+        <span class="pill">Human–Computer Interaction</span>
+        <span class="pill">Virtual Reality</span>
+        <span class="pill">Avatar Expression</span>
+        <span class="pill">Jiamu Tang · Yang Lu · collaborators</span>
+      </div>
+      <div class="hero-links">
+        <a class="button" href="https://docs.google.com/presentation/d/11DcrZ9Fngp4-0U1CtImvfscrhARVDYlfSrEPhthFIho/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Full conference slides ↗</a>
+        <a class="button" href="https://github.com/Eric-yyyyy/FacialExpressionModulation" target="_blank" rel="noopener noreferrer">Code &amp; prototypes ↗</a>
+      </div>
+    </section>
+
+    <section class="intro">
+      <div class="intro-label">The central question</div>
+      <p>Should a realistic avatar faithfully mirror every facial movement, or should it help people express the social signal they intend to send?</p>
+    </section>
+
+    <section class="walkthrough" aria-label="Slide walkthrough">
+      <article class="chapter">
+        <div class="chapter-head"><div class="step">01 · Motivation</div><h2>Faithful tracking is not always intended expression</h2></div>
+        <figure>
+          <div class="slide-frame"><img src="./media/slides/tuning-the-face/01-problem.png" alt="Slide explaining why faithful facial mirroring can differ from intended expression" /></div>
+          <figcaption><strong>Reading note</strong>A one-to-one copy can expose nervousness or other involuntary cues even when a person intends to appear composed. Because people cannot accurately monitor their own facial movement, small mismatches become especially noticeable on a photorealistic self-avatar.</figcaption>
+        </figure>
+      </article>
+
+      <article class="chapter">
+        <div class="chapter-head"><div class="step">02 · Concept</div><h2>A real-time modulation lens</h2></div>
+        <figure>
+          <div class="slide-frame"><img src="./media/slides/tuning-the-face/02-concept.png" alt="Slide illustrating facial expression exaggeration and suppression" loading="lazy" /></div>
+          <figcaption><strong>Reading note</strong>The system re-renders tracked expressions instead of mirroring them directly. It can exaggerate an existing cue so it reads more clearly, or suppress it so a user can remain composed. The goal is not to invent an emotion, but to tune the intensity of what the avatar communicates.</figcaption>
+        </figure>
+      </article>
+
+      <article class="chapter">
+        <div class="chapter-head"><div class="step">03 · Study design</div><h2>The same face, viewed from two perspectives</h2></div>
+        <figure>
+          <div class="slide-frame"><img src="./media/slides/tuning-the-face/03-study-design.png" alt="Study design comparing self-perception and observer perception" loading="lazy" /></div>
+          <figcaption><strong>Reading note</strong>Eighteen participants embodied their own avatar and rated accuracy and social appropriateness. Eighteen separate observers rated recognition, naturalness, and intensity. Across six emotions and nineteen modulation conditions, the study also logged raw facial input to test whether the avatar changed users’ own behavior.</figcaption>
+        </figure>
+      </article>
+
+      <article class="chapter">
+        <div class="chapter-head"><div class="step">04 · Finding one</div><h2>Suppression is tolerated; exaggeration is emotion-specific</h2></div>
+        <figure>
+          <div class="slide-frame"><img src="./media/slides/tuning-the-face/04-self-perception.png" alt="Charts of perceived accuracy and social appropriateness across emotions" loading="lazy" /></div>
+          <figcaption><strong>Reading note</strong>There is no universal multiplier. Happiness and surprise have a narrow acceptable range, while anger and disgust tolerate more exaggeration. Fear and sadness remain difficult to perform convincingly. Expression tuning therefore needs per-emotion boundaries rather than a single global setting.</figcaption>
+        </figure>
+      </article>
+
+      <article class="chapter">
+        <div class="chapter-head"><div class="step">05 · Finding two</div><h2>The avatar changes the user’s real face</h2></div>
+        <figure>
+          <div class="slide-frame"><img src="./media/slides/tuning-the-face/05-compensation.png" alt="Finding showing that users compensate for avatar expression modulation" loading="lazy" /></div>
+          <figcaption><strong>Reading note</strong>When the avatar suppresses an expression, users amplify their own facial movement. When it exaggerates, users relax. Embodiment and a live self-view create a feedback loop: people compensate for what the avatar shows, even though the modulation happens digitally.</figcaption>
+        </figure>
+      </article>
+
+      <article class="chapter">
+        <div class="chapter-head"><div class="step">06 · Design guidance</div><h2>From perception curves to “safe” ranges</h2></div>
+        <figure>
+          <div class="slide-frame"><img src="./media/slides/tuning-the-face/06-safe-range.png" alt="Per-emotion effective multiplier ranges derived from study results" loading="lazy" /></div>
+          <figcaption><strong>Reading note</strong>The project combines user appropriateness, observer naturalness, and recognition into a composite score, then retains the band within 80% of each emotion’s peak. These ranges are a design framework—not a fixed rule—and can shift with context and priorities.</figcaption>
+        </figure>
+      </article>
+
+      <article class="chapter">
+        <div class="chapter-head"><div class="step">07 · Validation</div><h2>More positive expression without a naturalness cost</h2></div>
+        <figure>
+          <div class="slide-frame"><img src="./media/slides/tuning-the-face/07-validation.png" alt="Results from the VR graduation speech validation study" loading="lazy" /></div>
+          <figcaption><strong>Reading note</strong>In a counterbalanced VR speech study, twelve participants spoke once with modulation and once without it. Ten judged the modulated speech as more positive, eight preferred their overall performance, and seven saw no difference in naturalness. This is an initial validation in one social context, not a population-wide estimate.</figcaption>
+        </figure>
+      </article>
+
+      <article class="chapter">
+        <div class="chapter-head"><div class="step">08 · Implications</div><h2>Expression control also raises questions of trust</h2></div>
+        <figure>
+          <div class="slide-frame"><img src="./media/slides/tuning-the-face/08-implications.png" alt="Discussion slide covering behavior, realism, and ethics" loading="lazy" /></div>
+          <figcaption><strong>Reading note</strong>A tunable face can support self-presentation and expression training, but it can also create dependence, social pressure, or a mask-like effect. The project treats disclosure—whether others should know that a face is being modulated—as an open design and governance question.</figcaption>
+        </figure>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">Selected slides and adapted presenter notes from the DIS 2026 conference presentation.</footer>
+
+  <script>
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    const label = document.getElementById('themeLabel');
+    function syncThemeLabel() {
+      label.textContent = root.getAttribute('data-theme') === 'dark' ? 'Light mode' : 'Dark mode';
+    }
+    toggle.addEventListener('click', () => {
+      root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      syncThemeLabel();
+    });
+    syncThemeLabel();
+  </script>
+</body>
+</html>
