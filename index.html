@@ -9,46 +9,49 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --ink: #1a1a1a;
-      --body: #3a3a3a;
-      --muted: #777;
-      --accent: #b44a2f;
-      --accent-soft: #f6efe9;
-      --bg: #faf8f5;
+      --ink: #20242a;
+      --body: #4a5058;
+      --muted: #7a818b;
+      --accent: #173b63;
+      --accent-rgb: 23, 59, 99;
+      --accent-soft: #e8eef5;
+      --bg: #f7f8fa;
       --card: #ffffff;
-      --border: #e8e4de;
-      --land: #ede8df;
-      --land-stroke: #d8d2c8;
-      --grid: #ece8e1;
-      --serif: 'Newsreader', 'Georgia', serif;
-      --sans: 'DM Sans', 'Helvetica Neue', sans-serif;
+      --border: #dde2e8;
+      --land: #e8ebef;
+      --land-stroke: #cdd3da;
+      --grid: #eceff2;
+      --serif: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+      --sans: 'IBM Plex Sans', 'Helvetica Neue', sans-serif;
+      --mono: 'IBM Plex Mono', monospace;
       --sidebar-w: 280px;
-      --header-glass: rgba(252,250,247,0.45);
+      --header-glass: rgba(255,255,255,0.64);
     }
 
     /* ─── DARK MODE ─── */
     :root[data-theme="dark"] {
-      --header-glass: rgba(20,18,14,0.42);
-      --ink: #f0ece5;
-      --body: #cfc8bf;
-      --muted: #8a847b;
-      --accent: #e0714f;
-      --accent-soft: #2a201a;
-      --bg: #16140f;
-      --card: #1d1a14;
-      --border: #33302a;
-      --land: #2a261e;
-      --land-stroke: #3a352c;
-      --grid: #221f18;
+      --header-glass: rgba(24,27,32,0.68);
+      --ink: #f5f7fa;
+      --body: #cdd2d8;
+      --muted: #8e96a1;
+      --accent: #7fa8d8;
+      --accent-rgb: 127, 168, 216;
+      --accent-soft: #25374a;
+      --bg: #181b20;
+      --card: #22262c;
+      --border: #343a43;
+      --land: #292e35;
+      --land-stroke: #414852;
+      --grid: #23282e;
     }
-    /* Map adapts to dark mode (overrides inline SVG fills) */
-    :root[data-theme="dark"] .map-svg-wrapper path:not(.connection-line) {
+    /* Map follows the active palette (overrides inline SVG colors) */
+    :root .map-svg-wrapper path:not(.connection-line) {
       fill: var(--land); stroke: var(--land-stroke);
     }
-    :root[data-theme="dark"] .map-svg-wrapper line { stroke: var(--grid); }
+    :root .map-svg-wrapper line { stroke: var(--grid); }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -67,12 +70,12 @@
     .cursor-glow {
       position: fixed; top: 0; left: 0;
       width: 380px; height: 380px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(180,74,47,0.10), transparent 65%);
+      background: radial-gradient(circle, rgba(var(--accent-rgb),0.10), transparent 65%);
       pointer-events: none; transform: translate(-50%, -50%);
       opacity: 0; transition: opacity 0.35s ease; z-index: 0;
     }
     :root[data-theme="dark"] .cursor-glow {
-      background: radial-gradient(circle, rgba(224,113,79,0.14), transparent 65%);
+      background: radial-gradient(circle, rgba(var(--accent-rgb),0.14), transparent 65%);
     }
     .page-wrapper { position: relative; z-index: 1; }
 
@@ -104,9 +107,9 @@
       content: '';
       position: absolute; inset: -60%;
       background:
-        radial-gradient(circle at 16% 45%, rgba(154,191,216,0.55), transparent 42%),
-        radial-gradient(circle at 52% 55%, rgba(141,189,158,0.40), transparent 42%),
-        radial-gradient(circle at 84% 45%, rgba(224,150,120,0.35), transparent 42%);
+        radial-gradient(circle at 16% 45%, rgba(23,59,99,0.20), transparent 42%),
+        radial-gradient(circle at 52% 55%, rgba(83,96,112,0.13), transparent 42%),
+        radial-gradient(circle at 84% 45%, rgba(190,197,205,0.18), transparent 42%);
       animation: hdrDrift 13s ease-in-out infinite alternate;
       pointer-events: none;
     }
@@ -132,7 +135,7 @@
     .hdr-lit {
       display: inline-block; white-space: nowrap; font-family: var(--serif);
       font-size: 0.98rem; letter-spacing: 0.01em; color: var(--ink); pointer-events: none;
-      text-shadow: 0 0 10px rgba(180,74,47,0.5), 0 0 2px rgba(180,74,47,0.35);
+      text-shadow: 0 0 10px rgba(var(--accent-rgb),0.38), 0 0 2px rgba(var(--accent-rgb),0.24);
       --mx: -300px; --my: -300px;
       -webkit-mask-image: radial-gradient(circle 88px at var(--mx) var(--my), #000 0%, rgba(0,0,0,0.25) 55%, transparent 100%);
       mask-image: radial-gradient(circle 88px at var(--mx) var(--my), #000 0%, rgba(0,0,0,0.25) 55%, transparent 100%);
@@ -196,13 +199,19 @@
       margin-bottom: 1.3rem;
     }
 
-    /* ─── PHOTO: pixel-art sprite → sharp on hover ─── */
+    /* ─── PHOTO: sampled binary portrait → decoded photograph ─── */
     .photo-wrap {
       position: relative;
       width: 160px;
       height: 190px;
       margin-bottom: 1.3rem;
       cursor: pointer;
+      border: 3px solid var(--card);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      touch-action: manipulation;
     }
     .photo-wrap .sidebar-photo {
       position: absolute;
@@ -211,16 +220,37 @@
       height: 100%;
       margin-bottom: 0;
       display: block;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
     }
-    .photo-wrap .sidebar-photo.pixel {
-      image-rendering: pixelated;
-      opacity: 1;
-      transition: opacity 0.5s ease;
+    .binary-portrait canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       z-index: 2;
+      pointer-events: none;
     }
-    .photo-wrap:hover .sidebar-photo.pixel { opacity: 0; }
+    .binary-portrait.is-ready .sidebar-photo { opacity: 0; }
+    .binary-portrait:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     @media (prefers-reduced-motion: reduce) {
-      .photo-wrap .sidebar-photo.pixel { display: none; }
+      .binary-portrait canvas { display: none; }
+      .binary-portrait.is-ready .sidebar-photo { opacity: 1; }
     }
     .photo-placeholder {
       width: 160px;
@@ -309,6 +339,7 @@
     .section { margin-bottom: 3rem; }
 
     .section-label {
+      font-family: var(--mono);
       font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.14em;
@@ -318,6 +349,7 @@
       padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--border);
     }
+    .section-label::before { content: '// '; }
 
     .bio {
       font-size: 0.95rem;
@@ -395,14 +427,14 @@
       border-radius: 50%;
       background: var(--accent);
       border: 2.5px solid var(--card);
-      box-shadow: 0 1px 6px rgba(180,74,47,0.25), 0 0 0 2px rgba(180,74,47,0.08);
+      box-shadow: 0 1px 6px rgba(var(--accent-rgb),0.25), 0 0 0 2px rgba(var(--accent-rgb),0.08);
       position: relative;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
     }
     .map-pin:hover .pin-dot,
     .map-pin.active .pin-dot {
       transform: scale(1.4);
-      box-shadow: 0 2px 10px rgba(180,74,47,0.35), 0 0 0 3px rgba(180,74,47,0.1);
+      box-shadow: 0 2px 10px rgba(var(--accent-rgb),0.35), 0 0 0 3px rgba(var(--accent-rgb),0.1);
     }
 
     .pin-pulse {
@@ -511,7 +543,7 @@
     /* Featured pin */
     .map-pin.featured .pin-dot {
       width: 16px; height: 16px; border-width: 3px;
-      box-shadow: 0 1px 8px rgba(180,74,47,0.3), 0 0 0 3px rgba(180,74,47,0.08);
+      box-shadow: 0 1px 8px rgba(var(--accent-rgb),0.3), 0 0 0 3px rgba(var(--accent-rgb),0.08);
     }
     .map-pin.featured .pin-pulse { width: 16px; height: 16px; }
 
@@ -622,14 +654,14 @@
     @media (hover: hover) and (pointer: fine) {
       .pub:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(180,74,47,0.10);
+        box-shadow: 0 8px 24px rgba(var(--accent-rgb),0.10);
         border-color: var(--border); background: var(--card);
       }
     }
 
     .pub-thumb {
       width: 180px; height: 110px; border-radius: 5px;
-      background: linear-gradient(135deg, #e8e4de 0%, #d6d0c8 100%);
+      background: linear-gradient(135deg, var(--border) 0%, var(--land-stroke) 100%);
       display: flex; align-items: center; justify-content: center;
       color: var(--muted); font-size: 0.65rem; text-transform: uppercase;
       letter-spacing: 0.08em; overflow: hidden; border: 1px solid var(--border);
@@ -668,7 +700,7 @@
     }
     .cv-link-card:hover {
       border-color: var(--accent);
-      box-shadow: 0 4px 16px rgba(180,74,47,0.08);
+      box-shadow: 0 4px 16px rgba(var(--accent-rgb),0.08);
     }
     .cv-link-icon {
       width: 40px; height: 40px; border-radius: 10px;
@@ -789,9 +821,10 @@
 
   <!-- ═══════════ LEFT SIDEBAR ═══════════ -->
   <aside class="sidebar">
-    <div class="photo-wrap">
-      <img class="sidebar-photo" src="./chan1.JPG" alt="Jiamu Tang" />
-      <img class="sidebar-photo pixel" src="./chan-pixel-cartoon.png" alt="" aria-hidden="true" />
+    <div class="photo-wrap binary-portrait" id="binaryPortrait" tabindex="0" role="button" aria-label="Interactive binary portrait of Jiamu Tang" aria-describedby="binaryPortraitHint" aria-pressed="false">
+      <img class="sidebar-photo" src="./chan1.JPG" alt="Portrait of Jiamu Tang" />
+      <canvas aria-hidden="true"></canvas>
+      <span class="sr-only" id="binaryPortraitHint">Move the pointer over the portrait, or press Enter, to decode the photograph.</span>
     </div>
 
     <div class="sidebar-info">
@@ -936,7 +969,7 @@
               <div class="card-date">Apr 2026</div>
               <div class="card-title"><em>Capability at a Glance</em> at CHI 2026</div>
               <div class="card-desc">Full paper accepted! Presenting design guidelines for intuitive VR avatars.<br/><a href="https://chi2026.acm.org/" target="_blank">CHI 2026 &rarr;</a></div>
-              <div class="card-tag" style="background:#eef3f9;color:#7a9ab8;">Paper</div>
+              <div class="card-tag" style="background:#e8eef5;color:#173b63;">Paper</div>
             </div>
           </div>
 
@@ -949,7 +982,7 @@
               <div class="card-date">Apr 2025</div>
               <div class="card-title">Presented <em>Dreamory</em> at CHI 2025</div>
               <div class="card-desc">Late-Breaking Work on AI-powered bedtime storytelling for emotional reframing.<br/><a href="https://chi2025.acm.org/" target="_blank">CHI 2025 &rarr;</a></div>
-              <div class="card-tag" style="background:#edf5f0;color:#6fa882;">Talk</div>
+              <div class="card-tag" style="background:#eef1f4;color:#4a5f78;">Talk</div>
             </div>
           </div>
 
@@ -962,7 +995,7 @@
               <div class="card-date">2025</div>
               <div class="card-title">Joined the BEAR Lab</div>
               <div class="card-desc">Began research on XR and avatar design with <a href="https://www.cs.rochester.edu/people/faculty/yan_yukang/index.html" target="_blank">Prof. Yukang Yan</a> at the University of Rochester.</div>
-              <div class="card-tag" style="background:#f5f1e8;color:#b09e6b;">Lab</div>
+              <div class="card-tag" style="background:#e5e9ee;color:#53606f;">Lab</div>
             </div>
           </div>
 
@@ -975,7 +1008,7 @@
               <div class="card-date">Jun 2026</div>
               <div class="card-title">Presented <em>Tuning the Face</em> at DIS 2026</div>
               <div class="card-desc">Full paper on modulating facial expressions for realistic self-avatars in VR.<br/><a href="https://dis.acm.org/2026/" target="_blank">DIS 2026 &rarr;</a></div>
-              <div class="card-tag" style="background:#edf5f0;color:#6fa882;">Talk</div>
+              <div class="card-tag" style="background:#eef1f4;color:#4a5f78;">Talk</div>
             </div>
           </div>
         </div>
@@ -1130,6 +1163,264 @@
 </div>
 
 <script>
+  // ─── Binary portrait ───
+  class BinaryPortrait {
+    constructor(element) {
+      this.element = element;
+      this.image = element.querySelector('img');
+      this.canvas = element.querySelector('canvas');
+      this.context = this.canvas.getContext('2d');
+      this.sampleCanvas = document.createElement('canvas');
+      this.revealCanvas = document.createElement('canvas');
+      this.reveal = 0;
+      this.revealTarget = 0;
+      this.pointerStrength = 0;
+      this.pointerTarget = 0;
+      this.pointer = { x: 0, y: 0 };
+      this.cells = [];
+      this.visible = true;
+      this.frame = 0;
+      this.lastTime = 0;
+      this.hoverTimer = 0;
+      this.finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (this.reducedMotion) return;
+      if (this.image.complete && this.image.naturalWidth) this.init();
+      else this.image.addEventListener('load', () => this.init(), { once: true });
+    }
+
+    init() {
+      this.resizeObserver = new ResizeObserver(() => this.resize());
+      this.resizeObserver.observe(this.element);
+      this.visibilityObserver = new IntersectionObserver(([entry]) => {
+        this.visible = entry.isIntersecting;
+        if (this.visible) this.requestFrame();
+        else if (this.frame) cancelAnimationFrame(this.frame);
+      }, { rootMargin: '80px' });
+      this.visibilityObserver.observe(this.element);
+
+      if (this.finePointer) {
+        this.element.addEventListener('pointerenter', event => this.onPointerEnter(event));
+        this.element.addEventListener('pointermove', event => this.onPointerMove(event));
+        this.element.addEventListener('pointerleave', () => this.onPointerLeave());
+      } else {
+        this.element.addEventListener('click', () => this.toggle());
+      }
+      this.element.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          this.toggle();
+        }
+      });
+
+      new MutationObserver(() => this.requestFrame()).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+      });
+      document.fonts?.ready.then(() => this.requestFrame());
+      this.resize();
+      this.draw(0);
+      this.element.classList.add('is-ready');
+      this.requestFrame();
+    }
+
+    resize() {
+      const bounds = this.canvas.getBoundingClientRect();
+      this.width = Math.max(1, Math.round(bounds.width));
+      this.height = Math.max(1, Math.round(bounds.height));
+      this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      for (const canvas of [this.canvas, this.revealCanvas]) {
+        canvas.width = Math.round(this.width * this.dpr);
+        canvas.height = Math.round(this.height * this.dpr);
+      }
+      this.context.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+      this.revealCanvas.getContext('2d').setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+      this.buildSamples();
+      this.requestFrame();
+    }
+
+    buildSamples() {
+      const spacing = 6;
+      const columns = Math.max(1, Math.round(this.width / spacing));
+      const rows = Math.max(1, Math.round(this.height / spacing));
+      this.sampleCanvas.width = columns;
+      this.sampleCanvas.height = rows;
+      const sampleContext = this.sampleCanvas.getContext('2d', { willReadFrequently: true });
+      this.drawCover(sampleContext, this.image, columns, rows);
+      const pixels = sampleContext.getImageData(0, 0, columns, rows).data;
+      this.cells = [];
+
+      for (let row = 0; row < rows; row += 1) {
+        for (let column = 0; column < columns; column += 1) {
+          const index = (row * columns + column) * 4;
+          const luminance = (0.2126 * pixels[index] + 0.7152 * pixels[index + 1] + 0.0722 * pixels[index + 2]) / 255;
+          const seed = ((column * 17 + row * 31) % 97) / 97;
+          this.cells.push({
+            x: (column + 0.5) * this.width / columns,
+            y: (row + 0.58) * this.height / rows,
+            luminance,
+            character: seed > luminance * 0.72 ? '1' : '0',
+            angle: seed * Math.PI * 2,
+            accent: (column * 11 + row * 7) % 29 === 0
+          });
+        }
+      }
+      this.fontSize = Math.max(4.8, Math.min(6.2, this.width / columns * 0.88));
+    }
+
+    drawCover(context, image, width, height) {
+      const imageRatio = image.naturalWidth / image.naturalHeight;
+      const targetRatio = width / height;
+      let sourceX = 0;
+      let sourceY = 0;
+      let sourceWidth = image.naturalWidth;
+      let sourceHeight = image.naturalHeight;
+      if (imageRatio > targetRatio) {
+        sourceWidth = image.naturalHeight * targetRatio;
+        sourceX = (image.naturalWidth - sourceWidth) / 2;
+      } else {
+        sourceHeight = image.naturalWidth / targetRatio;
+        sourceY = (image.naturalHeight - sourceHeight) / 2;
+      }
+      context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, width, height);
+    }
+
+    onPointerEnter(event) {
+      this.updatePointer(event);
+      this.pointerTarget = 1;
+      clearTimeout(this.hoverTimer);
+      this.hoverTimer = window.setTimeout(() => {
+        this.revealTarget = 1;
+        this.element.setAttribute('aria-pressed', 'true');
+        this.requestFrame();
+      }, 700);
+      this.requestFrame();
+    }
+
+    onPointerMove(event) {
+      this.updatePointer(event);
+      this.requestFrame();
+    }
+
+    onPointerLeave() {
+      clearTimeout(this.hoverTimer);
+      this.pointerTarget = 0;
+      this.revealTarget = 0;
+      this.element.setAttribute('aria-pressed', 'false');
+      this.requestFrame();
+    }
+
+    updatePointer(event) {
+      const bounds = this.canvas.getBoundingClientRect();
+      this.pointer.x = event.clientX - bounds.left;
+      this.pointer.y = event.clientY - bounds.top;
+    }
+
+    toggle() {
+      const decode = this.revealTarget < 0.5;
+      this.revealTarget = decode ? 1 : 0;
+      this.pointerTarget = 0;
+      this.element.setAttribute('aria-pressed', String(decode));
+      this.requestFrame();
+    }
+
+    requestFrame() {
+      if (this.visible && !this.frame) this.frame = requestAnimationFrame(time => this.tick(time));
+    }
+
+    tick(time) {
+      this.frame = 0;
+      const elapsed = Math.min(50, this.lastTime ? time - this.lastTime : 16);
+      this.lastTime = time;
+      const revealEase = Math.min(1, elapsed / 260);
+      const pointerEase = Math.min(1, elapsed / 120);
+      this.reveal += (this.revealTarget - this.reveal) * revealEase;
+      this.pointerStrength += (this.pointerTarget - this.pointerStrength) * pointerEase;
+      this.draw(time);
+
+      const moving = Math.abs(this.revealTarget - this.reveal) > 0.003 ||
+        Math.abs(this.pointerTarget - this.pointerStrength) > 0.003;
+      if (moving) this.requestFrame();
+    }
+
+    smoothstep(edge0, edge1, value) {
+      const x = Math.max(0, Math.min(1, (value - edge0) / (edge1 - edge0)));
+      return x * x * (3 - 2 * x);
+    }
+
+    draw(time) {
+      const context = this.context;
+      const styles = getComputedStyle(document.documentElement);
+      const background = styles.getPropertyValue('--bg').trim();
+      const ink = styles.getPropertyValue('--ink').trim();
+      const accent = styles.getPropertyValue('--accent').trim();
+      context.clearRect(0, 0, this.width, this.height);
+      context.fillStyle = background;
+      context.fillRect(0, 0, this.width, this.height);
+
+      if (this.reveal > 0.002) {
+        context.save();
+        context.globalAlpha = this.reveal;
+        this.drawCover(context, this.image, this.width, this.height);
+        context.restore();
+      }
+
+      const radius = Math.min(this.width, this.height) * 0.43;
+      if (this.pointerStrength > 0.002 && this.reveal < 0.998) {
+        const revealContext = this.revealCanvas.getContext('2d');
+        revealContext.clearRect(0, 0, this.width, this.height);
+        this.drawCover(revealContext, this.image, this.width, this.height);
+        revealContext.globalCompositeOperation = 'destination-in';
+        const gradient = revealContext.createRadialGradient(
+          this.pointer.x, this.pointer.y, radius * 0.12,
+          this.pointer.x, this.pointer.y, radius
+        );
+        const strength = this.pointerStrength * (1 - this.reveal);
+        gradient.addColorStop(0, `rgba(0,0,0,${strength})`);
+        gradient.addColorStop(0.55, `rgba(0,0,0,${strength * 0.82})`);
+        gradient.addColorStop(1, 'rgba(0,0,0,0)');
+        revealContext.fillStyle = gradient;
+        revealContext.fillRect(0, 0, this.width, this.height);
+        revealContext.globalCompositeOperation = 'source-over';
+        context.drawImage(this.revealCanvas, 0, 0, this.width, this.height);
+      }
+
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      context.font = `500 ${this.fontSize}px "IBM Plex Mono", monospace`;
+      for (const cell of this.cells) {
+        const distance = Math.hypot(cell.x - this.pointer.x, cell.y - this.pointer.y);
+        const localReveal = this.pointerStrength * (1 - this.smoothstep(radius * 0.18, radius, distance));
+        const decoded = Math.max(this.reveal, localReveal);
+        const imageContrast = 1 - cell.luminance;
+        const opacity = (0.12 + imageContrast * 0.88) * (1 - decoded);
+        if (opacity < 0.015) continue;
+        const drift = (localReveal * 2.8 + this.reveal * 1.4) * (0.45 + imageContrast * 0.55);
+        const x = cell.x + Math.cos(cell.angle) * drift;
+        const y = cell.y + Math.sin(cell.angle) * drift;
+        context.globalAlpha = opacity;
+        context.fillStyle = cell.accent ? accent : ink;
+        context.fillText(cell.character, x, y);
+      }
+      context.globalAlpha = 1;
+
+      if (this.reveal > 0.04 && this.reveal < 0.96) {
+        const scanY = this.height * this.reveal;
+        const scanGradient = context.createLinearGradient(0, scanY - 5, 0, scanY + 5);
+        scanGradient.addColorStop(0, 'rgba(255,255,255,0)');
+        scanGradient.addColorStop(0.5, 'rgba(255,255,255,0.35)');
+        scanGradient.addColorStop(1, 'rgba(255,255,255,0)');
+        context.fillStyle = scanGradient;
+        context.fillRect(0, scanY - 5, this.width, 10);
+      }
+    }
+  }
+
+  const binaryPortraitElement = document.getElementById('binaryPortrait');
+  if (binaryPortraitElement) new BinaryPortrait(binaryPortraitElement);
+
   // ─── Dark mode ───
   const root = document.documentElement;
   const themeToggle = document.getElementById('themeToggle');
