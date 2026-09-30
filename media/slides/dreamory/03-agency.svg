@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Dreamory keeps the person as the author of meaning</title>
+  <desc id="desc">A three-stage diagram moves from lived experience, through an AI narrative scaffold, to a person-authored interpretation.</desc>
+  <rect width="1600" height="900" fill="#f0f2ef"/>
+  <text x="92" y="125" fill="#123f1d" font-family="Georgia, serif" font-size="78">The scaffold supports reflection.</text>
+  <text x="92" y="200" fill="#123f1d" font-family="Georgia, serif" font-size="78">It does not own the meaning.</text>
+
+  <g transform="translate(95 310)">
+    <rect width="360" height="250" rx="26" fill="#ffffff"/>
+    <circle cx="70" cy="72" r="30" fill="#f4c451"/>
+    <path d="M70 40v64M38 72h64" stroke="#123f1d" stroke-width="8" stroke-linecap="round"/>
+    <text x="48" y="158" fill="#123f1d" font-family="Georgia, serif" font-size="38">Lived experience</text>
+    <text x="48" y="206" fill="#455348" font-family="Arial, sans-serif" font-size="24">What actually happened</text>
+  </g>
+
+  <path d="M485 435h110" stroke="#123f1d" stroke-width="5" stroke-linecap="round"/>
+  <path d="M578 418l22 17-22 17" fill="none" stroke="#123f1d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g transform="translate(620 310)">
+    <rect width="360" height="250" rx="26" fill="#e6e7ff"/>
+    <rect x="48" y="40" width="76" height="76" rx="16" fill="#767be8"/>
+    <text x="67" y="94" fill="#ffffff" font-family="Arial, sans-serif" font-size="34" font-weight="700">AI</text>
+    <text x="48" y="158" fill="#123f1d" font-family="Georgia, serif" font-size="38">Narrative scaffold</text>
+    <text x="48" y="206" fill="#455348" font-family="Arial, sans-serif" font-size="24">Alternative interpretations</text>
+  </g>
+
+  <path d="M1010 435h110" stroke="#123f1d" stroke-width="5" stroke-linecap="round"/>
+  <path d="M1103 418l22 17-22 17" fill="none" stroke="#123f1d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g transform="translate(1145 310)">
+    <rect width="360" height="250" rx="26" fill="#fff7dd"/>
+    <circle cx="86" cy="76" r="30" fill="#de5d3f"/>
+    <path d="M42 132c16-34 72-34 88 0" fill="none" stroke="#de5d3f" stroke-width="12" stroke-linecap="round"/>
+    <text x="48" y="172" fill="#123f1d" font-family="Georgia, serif" font-size="38">Person-authored</text>
+    <text x="48" y="216" fill="#455348" font-family="Arial, sans-serif" font-size="24">Meaning remains theirs</text>
+  </g>
+
+  <rect x="92" y="675" width="1416" height="132" rx="26" fill="#ffffff"/>
+  <text x="800" y="730" text-anchor="middle" fill="#b3482c" font-family="Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="3">THE BROADER QUESTION</text>
+  <text x="800" y="775" text-anchor="middle" fill="#123f1d" font-family="Georgia, serif" font-size="36">Can AI help reinterpret an experience without taking ownership of the interpretation?</text>
+</svg>
